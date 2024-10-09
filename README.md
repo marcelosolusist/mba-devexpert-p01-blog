@@ -1,9 +1,9 @@
-# **[Título do Projeto] - Aplicação de Blog Simples com MVC e API RESTful**
+# **[BlogExpert] - Aplicação de Blog Simples com MVC e API RESTful**
 
 ## **1. Apresentação**
 
-Bem-vindo ao repositório do projeto **[Título do Projeto]**. Este projeto é uma entrega do MBA DevXpert Full Stack .NET e é referente ao módulo **Introdução ao Desenvolvimento ASP.NET Core**.
-O objetivo principal desenvolver uma aplicação de blog que permite aos usuários criar, editar, visualizar e excluir posts e comentários, tanto através de uma interface web utilizando MVC quanto através de uma API RESTful.
+Bem-vindo ao repositório do projeto **[BlogExpert]**. Este projeto é uma entrega do MBA DevXpert Full Stack .NET e é referente ao módulo **Introdução ao Desenvolvimento ASP.NET Core**.
+O objetivo principal é desenvolver uma aplicação de blog que permite aos usuários criar, editar, visualizar e excluir posts e comentários, tanto através de uma interface web utilizando MVC quanto através de uma API RESTful.
 Descreva livremente mais detalhes do seu projeto aqui.
 
 ### **Autor**
@@ -40,9 +40,10 @@ A estrutura do projeto é organizada da seguinte forma:
 
 
 - src/
-  - Blog.Web/ - Projeto MVC
-  - Blog.Api/ - API RESTful
-  - Blog.Data/ - Modelos de Dados e Configuração do EF Core
+  - BlogExpert.Mvc/ - Projeto MVC
+  - BlogExpert.Api/ - API RESTful
+  - BlogExpert.Dados/ - Modelos de Dados e Configuração do EF Core
+  - BlogExpert.Negocio/ - Serviços de negócios
 - README.md - Arquivo de Documentação do Projeto
 - FEEDBACK.md - Arquivo para Consolidação dos Feedbacks
 - .gitignore - Arquivo de Ignoração do Git
@@ -74,12 +75,12 @@ A estrutura do projeto é organizada da seguinte forma:
    - Rode o projeto para que a configuração do Seed crie o banco e popule com os dados básicos
 
 3. **Executar a Aplicação MVC:**
-   - `cd src/Blog.Mvc/`
+   - `cd src/BlogExpert.Mvc/`
    - `dotnet run`
    - Acesse a aplicação em: http://localhost:5000
 
 4. **Executar a API:**
-   - `cd src/Blog.Api/`
+   - `cd src/BlogExpert.Api/`
    - `dotnet run`
    - Acesse a documentação da API em: http://localhost:5001/swagger
 
