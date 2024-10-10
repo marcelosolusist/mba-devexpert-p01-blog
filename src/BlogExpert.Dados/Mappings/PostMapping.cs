@@ -21,7 +21,11 @@ namespace BlogExpert.Dados.Mappings
 
             builder.Property(post => post.Conteudo)
                 .IsRequired()
-                .HasColumnType("varchar(2000)");
+                .HasColumnType("varchar(4000)");
+
+            builder.Property(post => post.EmailCriacao)
+                .IsRequired()
+                .HasColumnType("varchar(200)");
 
             builder.HasMany(post => post.Comentarios)
                 .WithOne(comentario => comentario.Post)
