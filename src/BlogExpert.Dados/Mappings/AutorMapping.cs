@@ -8,6 +8,8 @@ namespace BlogExpert.Dados.Mappings
     {
         public void Configure(EntityTypeBuilder<Autor> builder)
         {
+            //builder.HasKey(autor => autor.Id);
+
             builder.Property(autor => autor.Nome)
                 .IsRequired()
                 .HasColumnType("varchar(100)");
@@ -24,7 +26,7 @@ namespace BlogExpert.Dados.Mappings
                 .WithOne(post => post.Autor)
                 .HasForeignKey(post => post.AutorId);
 
-            builder.ToTable("Posts");
+            builder.ToTable("Autores");
         }
     }
 }

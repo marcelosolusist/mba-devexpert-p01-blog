@@ -13,6 +13,9 @@ namespace BlogExpert.Negocio.Entities.Validations
             RuleFor(post => post.Conteudo)
                 .NotEmpty().WithMessage("O campo {PropertyName} precisa ser fornecido")
                 .Length(2, 4000).WithMessage("O campo {PropertyName} precisa ter entre {MinLength} e {MaxLength} caracteres");
+
+            RuleFor(post => post.AutorId)
+                .NotEmpty().WithMessage("O campo {PropertyName} precisa ser fornecido");
         }
     }
 }

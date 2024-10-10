@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogExpert.Negocio", "src\BlogExpert.Negocio\BlogExpert.Negocio.csproj", "{5E664EE0-5C2E-4155-AEA0-DE85E10243CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogExpert.Negocio", "src\BlogExpert.Negocio\BlogExpert.Negocio.csproj", "{5E664EE0-5C2E-4155-AEA0-DE85E10243CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogExpert.Dados", "src\BlogExpert.Dados\BlogExpert.Dados.csproj", "{1981A77C-FDE3-4DA8-ADA5-264987351655}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogExpert.Dados", "src\BlogExpert.Dados\BlogExpert.Dados.csproj", "{1981A77C-FDE3-4DA8-ADA5-264987351655}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogExpert.Mvc", "src\BlogExpert.Mvc\BlogExpert.Mvc.csproj", "{B9B45D6C-ABD2-451A-9234-90D7128A29A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{1981A77C-FDE3-4DA8-ADA5-264987351655}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1981A77C-FDE3-4DA8-ADA5-264987351655}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1981A77C-FDE3-4DA8-ADA5-264987351655}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9B45D6C-ABD2-451A-9234-90D7128A29A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9B45D6C-ABD2-451A-9234-90D7128A29A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9B45D6C-ABD2-451A-9234-90D7128A29A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9B45D6C-ABD2-451A-9234-90D7128A29A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

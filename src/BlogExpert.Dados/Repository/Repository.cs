@@ -19,7 +19,7 @@ namespace BlogExpert.Dados.Repository
 
         public virtual async Task<TEntity> ObterPorId(Guid id)
         {
-            return await DbSet.FindAsync(id);
+            return DbSet.FirstOrDefault(e => e.Id == id);
         }
 
         public virtual async Task<List<TEntity>> Listar()
