@@ -1,11 +1,6 @@
 ﻿using BlogExpert.Negocio.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BlogExpert.Dados.Mappings
 {
@@ -13,7 +8,6 @@ namespace BlogExpert.Dados.Mappings
     {
         public void Configure(EntityTypeBuilder<Post> builder)
         {
-            builder.HasKey(post => post.Id);
 
             builder.Property(post => post.Titulo)
                 .IsRequired()

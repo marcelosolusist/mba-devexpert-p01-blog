@@ -2,12 +2,7 @@
 using BlogExpert.Negocio.Entities;
 using BlogExpert.Negocio.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlogExpert.Dados.Repository
 {
@@ -27,7 +22,7 @@ namespace BlogExpert.Dados.Repository
             return await DbSet.FindAsync(id);
         }
 
-        public virtual async Task<List<TEntity>> ObterTodos()
+        public virtual async Task<List<TEntity>> Listar()
         {
             return await DbSet.ToListAsync();
         }

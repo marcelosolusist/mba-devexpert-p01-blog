@@ -5,7 +5,6 @@
         public Guid AutorId { get; set; }
         public string? Titulo { get; set; }
         public string? Conteudo { get; set; }
-        public string? EmailCriacao { get; set; }
 
         /* EF Relation */
         public Autor? Autor {  get; set; }

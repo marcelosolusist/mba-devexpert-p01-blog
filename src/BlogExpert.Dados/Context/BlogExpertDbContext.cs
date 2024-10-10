@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BlogExpert.Negocio.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogExpert.Dados.Context
 {
@@ -9,6 +10,10 @@ namespace BlogExpert.Dados.Context
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             ChangeTracker.AutoDetectChangesEnabled = false;
         }
+
+        public DbSet<Autor> Autores { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Comentario> Comentarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
