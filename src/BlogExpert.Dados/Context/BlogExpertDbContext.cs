@@ -44,6 +44,14 @@ namespace BlogExpert.Dados.Context
                 }
             }
 
+            foreach (var entry in ChangeTracker.Entries().Where(entry => entry.Entity.GetType().GetProperty("EmailCriacao") != null))
+            {
+                if (entry.State == EntityState.Modified)
+                {
+                    entry.Property("EmailCriacao").IsModified = false;
+                }
+            }
+
             return base.SaveChangesAsync(cancellationToken);
         }
     }

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogExpert.Negocio", "src\B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogExpert.Dados", "src\BlogExpert.Dados\BlogExpert.Dados.csproj", "{1981A77C-FDE3-4DA8-ADA5-264987351655}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogExpert.Mvc", "src\BlogExpert.Mvc\BlogExpert.Mvc.csproj", "{B9B45D6C-ABD2-451A-9234-90D7128A29A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogExpert.Mvc", "src\BlogExpert.Mvc\BlogExpert.Mvc.csproj", "{B9B45D6C-ABD2-451A-9234-90D7128A29A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

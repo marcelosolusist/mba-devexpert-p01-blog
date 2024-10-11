@@ -26,6 +26,8 @@ namespace BlogExpert.Negocio.Services
 
             autor.EmailCriacao = contaAutenticada.EmailConta;
 
+            if (!VerificarSePodeManipularAutor(autor, contaAutenticada)) return;
+
             await _autorRepository.Adicionar(autor);
         }
 
@@ -72,10 +74,12 @@ namespace BlogExpert.Negocio.Services
 
         private bool VerificarSePodeManipularAutor(Autor autor, ContaAutenticada contaAutenticada)
         {
-            if (contaAutenticada.EhAdministrador || autor.EmailCriacao == contaAutenticada.EmailConta || autor.Email == contaAutenticada.EmailConta) return true;
+            if (contaAutenticada.EhAdministrador || autor.Email == contaAutenticada.EmailConta) return true;
             
             Notificar("A conta autenticada não pode manipular esse autor.");
             return false;
         }
+
+       
     }
 }
