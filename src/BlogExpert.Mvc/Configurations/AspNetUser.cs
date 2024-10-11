@@ -27,7 +27,7 @@ namespace BlogExpert.Mvc.Configurations
 
         private bool EhAdmin()
         {
-            return _accessor.HttpContext.User.IsInRole("Admin");
+            return _accessor.HttpContext.User.IsInRole ("Admin");
         }
 
         public ContaAutenticada ObterContaAutenticada()

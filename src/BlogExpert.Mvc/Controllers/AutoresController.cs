@@ -48,6 +48,7 @@ namespace BlogExpert.Mvc.Controllers
         }
 
         [Route("novo-autor")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
