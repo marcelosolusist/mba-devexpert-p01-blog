@@ -1,6 +1,7 @@
 ﻿using BlogExpert.Dados.Context;
 using BlogExpert.Negocio.Entities;
 using BlogExpert.Negocio.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogExpert.Dados.Repository
 {

@@ -12,7 +12,7 @@ namespace BlogExpert.Negocio.Entities
 
         [Key]
         public Guid Id { get; set; }
-        public DateTime DataCriacao { get; set; }
+        public DateTime? DataCriacao { get; set; }
         public string? EmailCriacao { get; set; }
     }
 }
