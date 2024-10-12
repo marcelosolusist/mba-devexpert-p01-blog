@@ -15,5 +15,10 @@ namespace BlogExpert.Dados.Repository
 
             return false;
         }
+
+        public override async Task<List<Autor>> Listar()
+        {
+            return Db.Autores.OrderBy(a => a.Nome).ToList();
+        }
     }
 }

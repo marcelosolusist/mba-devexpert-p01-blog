@@ -1,7 +1,6 @@
 ﻿using BlogExpert.Negocio.Entities;
 using BlogExpert.Negocio.Entities.Validations;
 using BlogExpert.Negocio.Interfaces;
-using BlogExpert.Negocio.Seguranca;
 
 namespace BlogExpert.Negocio.Services
 {
@@ -9,12 +8,12 @@ namespace BlogExpert.Negocio.Services
     {
         private readonly IAutorRepository _autorRepository;
 
-        public AutorService(IAutorRepository autorRepository, INotificador notificador) : base(notificador)
+        public AutorService(IAutorRepository autorRepository, INotificador notificador, IContaAutenticada contaAutenticada) : base(notificador, contaAutenticada)
         {
             _autorRepository = autorRepository;
         }
 
-        public async Task Adicionar(Autor autor, ContaAutenticada contaAutenticada)
+        public async Task Adicionar(Autor autor)
         {
             if (!ExecutarValidacao(new AutorValidation(), autor)) return;
 
@@ -24,14 +23,14 @@ namespace BlogExpert.Negocio.Services
                 return;
             }
 
-            autor.EmailCriacao = contaAutenticada.EmailConta;
+            autor.EmailCriacao = _contaAutenticada.Email;
 
-            if (!VerificarSePodeManipularAutor(autor, contaAutenticada)) return;
+            if (!VerificarSePodeManipularAutor(autor)) return;
 
             await _autorRepository.Adicionar(autor);
         }
 
-        public async Task Atualizar(Autor autor, ContaAutenticada contaAutenticada)
+        public async Task Atualizar(Autor autor)
         {
             if (!ExecutarValidacao(new AutorValidation(), autor)) return;
 
@@ -41,12 +40,12 @@ namespace BlogExpert.Negocio.Services
                 return;
             }
 
-            if (!VerificarSePodeManipularAutor(autor, contaAutenticada)) return;
+            if (!VerificarSePodeManipularAutor(autor)) return;
 
             await _autorRepository.Atualizar(autor);
         }
 
-        public async Task Remover(Guid id, ContaAutenticada contaAutenticada)
+        public async Task Remover(Guid id)
         {
             var autor = await _autorRepository.ObterPorId(id);
 
@@ -62,7 +61,7 @@ namespace BlogExpert.Negocio.Services
                 return;
             }
 
-            if (!VerificarSePodeManipularAutor(autor, contaAutenticada)) return;
+            if (!VerificarSePodeManipularAutor(autor)) return;
 
             await _autorRepository.Remover(id);
         }
@@ -72,9 +71,9 @@ namespace BlogExpert.Negocio.Services
             _autorRepository?.Dispose();
         }
 
-        private bool VerificarSePodeManipularAutor(Autor autor, ContaAutenticada contaAutenticada)
+        private bool VerificarSePodeManipularAutor(Autor autor)
         {
-            if (contaAutenticada.EhAdministrador || autor.Email == contaAutenticada.EmailConta) return true;
+            if (_contaAutenticada.EhAdministrador || autor.Email == _contaAutenticada.Email) return true;
             
             Notificar("A conta autenticada não pode manipular esse autor.");
             return false;

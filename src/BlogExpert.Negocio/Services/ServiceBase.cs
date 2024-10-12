@@ -9,10 +9,12 @@ namespace BlogExpert.Negocio.Services
     public abstract class ServiceBase
     {
         private readonly INotificador _notificador;
+        protected readonly IContaAutenticada _contaAutenticada;
 
-        public ServiceBase(INotificador notificador)
+        public ServiceBase(INotificador notificador, IContaAutenticada contaAutenticada)
         {
-            _notificador = notificador;            
+            _notificador = notificador;
+            _contaAutenticada = contaAutenticada;
         }
 
         protected void Notificar(ValidationResult validationResult)

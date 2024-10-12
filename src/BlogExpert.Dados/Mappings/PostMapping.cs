@@ -14,7 +14,7 @@ namespace BlogExpert.Dados.Mappings
                 .IsRequired()
                 .HasColumnType("varchar(100)");
 
-            builder.Property(post => post.Conteudo)
+            builder.Property(post => post.Descricao)
                 .IsRequired()
                 .HasColumnType("varchar(4000)");
 
