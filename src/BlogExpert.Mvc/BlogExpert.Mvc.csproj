@@ -22,4 +22,11 @@
     <ProjectReference Include="..\BlogExpert.Negocio\BlogExpert.Negocio.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Posts\Edit.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

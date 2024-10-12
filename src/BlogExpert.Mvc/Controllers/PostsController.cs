@@ -30,7 +30,6 @@ namespace BlogExpert.Mvc.Controllers
         }
 
         [AllowAnonymous]
-        //[Route("lista-de-posts")]
         public async Task<IActionResult> Index()
         {
             return View(_mapper.Map<IEnumerable<PostViewModel>>(await _postRepository.Listar()));
@@ -53,7 +52,7 @@ namespace BlogExpert.Mvc.Controllers
         [Route("novo-post")]
         public async Task<IActionResult> Create()
         {
-            ViewBag.AutoresIds = await ObterListaDeAutores();
+            ViewBag.AutoresIds = await ObterListaDeAutores(null);
             return View();
         }
 
@@ -62,7 +61,7 @@ namespace BlogExpert.Mvc.Controllers
         public async Task<IActionResult> Create(PostViewModel postViewModel, string autoresIds)
         {
             if (!string.IsNullOrEmpty(autoresIds)) postViewModel.AutorId = Guid.Parse(autoresIds);
-            ViewBag.AutoresIds = await ObterListaDeAutores();
+            ViewBag.AutoresIds = await ObterListaDeAutores(null);
             if (!ModelState.IsValid) return View(postViewModel);
 
             var post = _mapper.Map<Post>(postViewModel);
@@ -76,20 +75,20 @@ namespace BlogExpert.Mvc.Controllers
         [Route("editar-post/{id:guid}")]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var postViewModel = await ObterPost(id);
+            var postViewModel = await ObterPostParaEdicao(id);
 
-            if (postViewModel == null)
-            {
-                return NotFound();
-            }
+            ViewBag.AutoresIds = await ObterListaDeAutores(id.ToString());
 
             return View(postViewModel);
         }
 
         [Route("editar-post/{id:guid}")]
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, PostViewModel postViewModel)
+        public async Task<IActionResult> Edit(Guid id, PostViewModel postViewModel, string autoresIds)
         {
+            if (!string.IsNullOrEmpty(autoresIds)) postViewModel.AutorId = Guid.Parse(autoresIds);
+            ViewBag.AutoresIds = await ObterListaDeAutores(id.ToString());
+
             if (id != postViewModel.Id) return NotFound();
 
             if (!ModelState.IsValid) return View(postViewModel);
@@ -105,12 +104,7 @@ namespace BlogExpert.Mvc.Controllers
         [Route("excluir-post/{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var postViewModel = await ObterPost(id);
-
-            if (postViewModel == null)
-            {
-                return NotFound();
-            }
+            var postViewModel = await ObterPostParaEdicao(id);
 
             return View(postViewModel);
         }
@@ -134,10 +128,16 @@ namespace BlogExpert.Mvc.Controllers
         {
             return _mapper.Map<PostViewModel>(await _postRepository.ObterPorId(id));
         }
-
-        private async Task<SelectList> ObterListaDeAutores()
+        private async Task<PostViewModel> ObterPostParaEdicao(Guid id)
         {
-            return new SelectList(await _postService.ListarAutoresDaContaAutenticada(), "Id", "Nome");
+            return _mapper.Map<PostViewModel>(await _postService.ObterParaEdicao(id));
+        }
+
+        private async Task<SelectList> ObterListaDeAutores(string? autorId)
+        {
+            var listaDeAutores = await _postService.ListarAutoresDaContaAutenticada();
+            if (!string.IsNullOrEmpty(autorId)) return new SelectList(listaDeAutores, "Id", "Nome", autorId);
+            return new SelectList(listaDeAutores, "Id", "Nome");
         }
     }
 }

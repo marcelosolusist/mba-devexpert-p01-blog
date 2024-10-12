@@ -20,12 +20,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Descricao" class="control-label"></label>
-                <input asp-for="Descricao" class="form-control line" />
+                <textarea asp-for="Descricao" class="form-control" rows="10">@Model.Descricao</textarea>
                 <span asp-validation-for="Descricao" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label class="control-label">Autor</label>
-                <div class="form-control">@Html.DropDownList("AutoresIds")</div>
+                <div>@Html.DropDownList("AutoresIds")</div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Cadastrar" class="btn btn-primary" />
