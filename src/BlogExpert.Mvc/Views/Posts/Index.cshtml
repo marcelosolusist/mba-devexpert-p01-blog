@@ -1,57 +1,93 @@
-﻿@model IEnumerable<BlogExpert.Mvc.ViewModels.PostViewModel>
-
-@{
-    ViewData["Title"] = "Lista de Posts";
-}
-
-<h1>@ViewData["Title"]</h1>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 <vc:Summary></vc:Summary>
-
-<p>
-    <a class="btn btn-info" asp-action="Create">Novo post</a>
-</p>
-
-<table class="table table-hover">
-    <thead class="thead-dark">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Titulo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataCriacao)
-            </th>
-            <th>
-                Autor
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+@if (SignInManager.IsSignedIn(User))
+{
+    <p>
+        <a class="btn btn-info" asp-action="Create">Novo post</a>
+    </p>
+}
+@foreach (var post in Model)
+{
+    <div class="card">
+        <dl class="card">
+            <dd class="card-header">
+                <h1>@post.Titulo</h1>
+            </dd>
+            <dd class="card-body">
+                <h2>@post.Descricao</h2>
+            </dd>
+            <dd class="card-footer">
+                <table border="0">
+                    <tr>
+                        <td>
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <a class="btn btn-info" asp-action="Details" asp-route-id="@post.Id">Detalhes</a>
+                                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@post.Id">Editar</a>
+                                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@post.Id">Excluir</a>
+                            }
+                        </td>
+                        <td class="col-1"></td>
+                        <td>
+                            <div align="right">
+                                <b>Autor:</b> @post.Autor.Nome - <b>Publicação:</b> @post.DataCriacao
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </dd>
+        </dl>
+        @if (SignInManager.IsSignedIn(User))
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Titulo)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.Descricao)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DataCriacao)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Autor.Nome)
-                </td>
-                <td class="text-right">
-                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id"><spam class="fa fa-search"></spam></a>
-                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id"><spam class="fa fa-pencil-alt"></spam></a>
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><spam class="fa fa-trash"></spam></a>
-                </td>
-            </tr>
+            <dd class="col-sm-10">
+                <a class="btn btn-info" asp-action="CreateComentario">Novo comentário</a>
+            </dd>
         }
-    </tbody>
-</table>
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        Comentário
+                    </th>
+                    <th>
+                        Data
+                    </th>
+                    <th>
+                        Usuário
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var comentario in post.Comentarios)
+            {
+                <tr>
+                    <td>
+                        @comentario.Descricao
+                    </td>
+                    <td>
+                        @comentario.DataCriacao
+                    </td>
+                    <td>
+                        @comentario.EmailCriacao
+                    </td>
+                    <td class="text-right">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <a class="btn btn-warning" asp-action="EditComentario" asp-route-id="@comentario.Id"><spam class="fa fa-pencil-alt"></spam></a>
+                            <a class="btn btn-danger" asp-action="DeleteComentario" asp-route-id="@comentario.Id"><spam class="fa fa-trash"></spam></a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+        </table>
+     </div>
+     <br />
+}
+
+
+
