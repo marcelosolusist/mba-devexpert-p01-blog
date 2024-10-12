@@ -1,7 +1,6 @@
 ﻿using BlogExpert.Negocio.Entities;
 using BlogExpert.Negocio.Entities.Validations;
 using BlogExpert.Negocio.Interfaces;
-using BlogExpert.Negocio.Seguranca;
 
 namespace BlogExpert.Negocio.Services
 {
@@ -9,30 +8,30 @@ namespace BlogExpert.Negocio.Services
     {
         private readonly IComentarioRepository _comentarioRepository;
 
-        public ComentarioService(IComentarioRepository comentarioRepository, INotificador notificador) : base(notificador)
+        public ComentarioService(IComentarioRepository comentarioRepository, INotificador notificador, IContaAutenticada contaAutenticada) : base(notificador, contaAutenticada)
         {
             _comentarioRepository = comentarioRepository;
         }
 
-        public async Task Adicionar(Comentario comentario, ContaAutenticada contaAutenticada)
+        public async Task Adicionar(Comentario comentario)
         {
             if (!ExecutarValidacao(new ComentarioValidation(), comentario)) return;
 
-            comentario.EmailCriacao = contaAutenticada.EmailConta;
+            comentario.EmailCriacao = _contaAutenticada.Email;
 
             await _comentarioRepository.Adicionar(comentario);
         }
 
-        public async Task Atualizar(Comentario comentario, ContaAutenticada contaAutenticada)
+        public async Task Atualizar(Comentario comentario)
         {
             if (!ExecutarValidacao(new ComentarioValidation(), comentario)) return;
 
-            if (!VerificarSePodeManipularComentario(comentario, contaAutenticada)) return;
+            if (!VerificarSePodeManipularComentario(comentario)) return;
 
             await _comentarioRepository.Atualizar(comentario);
         }
 
-        public async Task Remover(Guid id, ContaAutenticada contaAutenticada)
+        public async Task Remover(Guid id)
         {
             var comentario = await _comentarioRepository.ObterPorId(id);
 
@@ -42,7 +41,7 @@ namespace BlogExpert.Negocio.Services
                 return;
             }
 
-            if (!VerificarSePodeManipularComentario(comentario, contaAutenticada)) return;
+            if (!VerificarSePodeManipularComentario(comentario)) return;
 
             await _comentarioRepository.Remover(id);
         }
@@ -52,9 +51,9 @@ namespace BlogExpert.Negocio.Services
             _comentarioRepository?.Dispose();
         }
 
-        private bool VerificarSePodeManipularComentario(Comentario comentario, ContaAutenticada contaAutenticada)
+        private bool VerificarSePodeManipularComentario(Comentario comentario)
         {
-            if (contaAutenticada.EhAdministrador || comentario.EmailCriacao == contaAutenticada.EmailConta) return true;
+            if (_contaAutenticada.EhAdministrador || comentario.EmailCriacao == _contaAutenticada.Email) return true;
 
             Notificar("A conta autenticada não pode manipular esse comentário.");
             return false;

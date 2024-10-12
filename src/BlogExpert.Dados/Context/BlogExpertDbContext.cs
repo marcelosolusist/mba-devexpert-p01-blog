@@ -1,9 +1,10 @@
 ﻿using BlogExpert.Negocio.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogExpert.Dados.Context
 {
-    public class BlogExpertDbContext : DbContext
+    public class BlogExpertDbContext : IdentityDbContext
     {
         public BlogExpertDbContext(DbContextOptions<BlogExpertDbContext> options) : base(options)
         {

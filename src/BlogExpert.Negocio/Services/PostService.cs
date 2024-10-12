@@ -1,7 +1,6 @@
 ﻿using BlogExpert.Negocio.Entities;
 using BlogExpert.Negocio.Entities.Validations;
 using BlogExpert.Negocio.Interfaces;
-using BlogExpert.Negocio.Seguranca;
 
 namespace BlogExpert.Negocio.Services
 {
@@ -9,12 +8,12 @@ namespace BlogExpert.Negocio.Services
     {
         private readonly IPostRepository _postRepository;
         private readonly IAutorRepository _autorRepository;
-        public PostService(IPostRepository postRepository, IAutorRepository autorRepository, INotificador notificador) : base(notificador)
+        public PostService(IPostRepository postRepository, IAutorRepository autorRepository, INotificador notificador, IContaAutenticada contaAutenticada) : base(notificador, contaAutenticada)
         {
             _postRepository = postRepository;
             _autorRepository = autorRepository;
         }
-        public async Task Adicionar(Post post, ContaAutenticada contaAutenticada)
+        public async Task Adicionar(Post post)
         {
             if (!ExecutarValidacao(new PostValidation(), post)) return;
 
@@ -24,17 +23,17 @@ namespace BlogExpert.Negocio.Services
                 return;
             }
 
-            if (!await VerificarSeAutorValidoEPodeManipularPost(post, contaAutenticada, true))
+            if (!await VerificarSeAutorValidoEPodeManipularPost(post, true))
             {
                 return;
             }
 
-            post.EmailCriacao = contaAutenticada.EmailConta;
+            post.EmailCriacao = _contaAutenticada.Email;
 
             await _postRepository.Adicionar(post);
         }
 
-        public async Task Atualizar(Post post, ContaAutenticada contaAutenticada)
+        public async Task Atualizar(Post post)
         {
             if (!ExecutarValidacao(new PostValidation(), post)) return;
 
@@ -44,12 +43,12 @@ namespace BlogExpert.Negocio.Services
                 return;
             }
 
-            if (!await VerificarSeAutorValidoEPodeManipularPost(post, contaAutenticada, false)) return;
+            if (!await VerificarSeAutorValidoEPodeManipularPost(post, false)) return;
 
             await _postRepository.Atualizar(post);
         }
 
-        public async Task Remover(Guid id, ContaAutenticada contaAutenticada)
+        public async Task Remover(Guid id)
         {
             var post = await _postRepository.ObterPorId(id);
 
@@ -65,15 +64,15 @@ namespace BlogExpert.Negocio.Services
                 return;
             }
 
-            if (!await VerificarSeAutorValidoEPodeManipularPost(post, contaAutenticada, false)) return;
+            if (!await VerificarSeAutorValidoEPodeManipularPost(post, false)) return;
 
             await _postRepository.Remover(id);
         }
 
-        public async Task<List<Autor>> ListarAutoresDaContaAutenticada(ContaAutenticada contaAutenticada)
+        public async Task<List<Autor>> ListarAutoresDaContaAutenticada()
         {
 
-            if (!contaAutenticada.EhAdministrador) return _autorRepository.Buscar(a => a.Email == contaAutenticada.EmailConta).Result.ToList();
+            if (!_contaAutenticada.EhAdministrador) return _autorRepository.Buscar(a => a.Email == _contaAutenticada.Email).Result.ToList();
 
             return _autorRepository.Buscar(a => !string.IsNullOrEmpty(a.Nome)).Result.OrderBy(a => a.Nome).ToList();
         }
@@ -83,7 +82,7 @@ namespace BlogExpert.Negocio.Services
             _postRepository?.Dispose();
         }
 
-        private async Task<bool> VerificarSeAutorValidoEPodeManipularPost(Post post, ContaAutenticada contaAutenticada, bool verificarAtivo)
+        private async Task<bool> VerificarSeAutorValidoEPodeManipularPost(Post post, bool verificarAtivo)
         {
             var autor = await _autorRepository.ObterPorId(post.AutorId);
 
@@ -99,9 +98,9 @@ namespace BlogExpert.Negocio.Services
                 return false;
             }
 
-            if (!contaAutenticada.EhAdministrador)
+            if (!_contaAutenticada.EhAdministrador)
             {
-                var autoresDaConta = await ListarAutoresDaContaAutenticada(contaAutenticada);
+                var autoresDaConta = await ListarAutoresDaContaAutenticada();
                 if (autoresDaConta == null)
                 {
                     Notificar("Não há autor disponível para a conta autenticada.");
@@ -115,7 +114,7 @@ namespace BlogExpert.Negocio.Services
                 }
             }
 
-            if (verificarAtivo || contaAutenticada.EhAdministrador || post.EmailCriacao == contaAutenticada.EmailConta || autor.Email == contaAutenticada.EmailConta) return true;
+            if (verificarAtivo || _contaAutenticada.EhAdministrador || post.EmailCriacao == _contaAutenticada.Email || autor.Email == _contaAutenticada.Email) return true;
             
             Notificar("A conta autenticada não pode manipular esse post.");
             return false;

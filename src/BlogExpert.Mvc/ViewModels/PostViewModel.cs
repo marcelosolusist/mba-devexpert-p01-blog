@@ -17,8 +17,8 @@ namespace BlogExpert.Mvc.ViewModels
         public string Titulo { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
-        [StringLength(200, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 2)]
-        public string Conteudo { get; set; }
+        [StringLength(4000, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 2)]
+        public string Descricao { get; set; }
 
         public DateTime DataCriacao { get; set; }
         

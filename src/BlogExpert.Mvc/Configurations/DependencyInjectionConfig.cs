@@ -1,6 +1,5 @@
 ﻿using BlogExpert.Dados.Context;
 using BlogExpert.Dados.Repository;
-using BlogExpert.Mvc.Data;
 using BlogExpert.Negocio.Interfaces;
 using BlogExpert.Negocio.Notificacoes;
 using BlogExpert.Negocio.Services;
@@ -11,7 +10,6 @@ namespace BlogExpert.Mvc.Configurations
     {
         public static IServiceCollection ResolveDependencies(this IServiceCollection services)
         {
-            services.AddScoped<ApplicationDbContext>();
             services.AddScoped<BlogExpertDbContext>();
             services.AddScoped<IAutorRepository, AutorRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
@@ -24,7 +22,7 @@ namespace BlogExpert.Mvc.Configurations
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddScoped<IUser, AspNetUser>();
+            services.AddScoped<IContaAutenticada, ContaAutenticada>();
 
             return services;
         }

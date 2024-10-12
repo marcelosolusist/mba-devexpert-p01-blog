@@ -7,23 +7,24 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlogExpert.Mvc.Controllers
 {
+    [Authorize]
     public class AutoresController : BaseController
     {
         private readonly IAutorService _autorService;
         private readonly IAutorRepository _autorRepository;
         private readonly IMapper _mapper;
-        private readonly IUser _user;
+        private readonly IContaAutenticada _contaAutenticada;
 
         public AutoresController(IMapper mapper,
                                       IAutorService autorService,
                                       INotificador notificador,
                                       IAutorRepository autorRepository,
-                                      IUser user) : base(notificador)
+                                      IContaAutenticada contaAutenticada) : base(notificador)
         {
             _mapper = mapper;
             _autorService = autorService;
             _autorRepository = autorRepository;
-            _user = user;
+            _contaAutenticada = contaAutenticada;
         }
 
         [AllowAnonymous]
@@ -51,7 +52,10 @@ namespace BlogExpert.Mvc.Controllers
         //[Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
-            return View();
+            var autorViewModel = new AutorViewModel();
+            autorViewModel.Email = _contaAutenticada.Email;
+            autorViewModel.Ativo = true;
+            return View(autorViewModel);
         }
 
         [Route("novo-autor")]
@@ -61,7 +65,7 @@ namespace BlogExpert.Mvc.Controllers
             if (!ModelState.IsValid) return View(autorViewModel);
 
             var autor = _mapper.Map<Autor>(autorViewModel);
-            await _autorService.Adicionar(autor, _user.ObterContaAutenticada());
+            await _autorService.Adicionar(autor);
 
             if (!OperacaoValida()) return View(autorViewModel);
 
@@ -90,7 +94,7 @@ namespace BlogExpert.Mvc.Controllers
             if (!ModelState.IsValid) return View(autorViewModel);
 
             var autor = _mapper.Map<Autor>(autorViewModel);
-            await _autorService.Atualizar(autor, _user.ObterContaAutenticada());
+            await _autorService.Atualizar(autor);
 
             if (!OperacaoValida()) return View(await ObterAutor(id));
 
@@ -118,7 +122,7 @@ namespace BlogExpert.Mvc.Controllers
 
             if (autor == null) return NotFound();
 
-            await _autorService.Remover(id, _user.ObterContaAutenticada());
+            await _autorService.Remover(id);
 
             if (!OperacaoValida()) return View(autor);
 
