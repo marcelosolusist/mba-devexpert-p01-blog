@@ -11,68 +11,68 @@ namespace BlogExpert.Api.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/posts")]
-    public class PostsController : MainController
+    [Route("api/comentarios")]
+    public class ComentariosController : MainController
     {
         private readonly IMapper _mapper;
-        private readonly IPostService _postService;
-        private readonly IPostRepository _postRepository;
-        public PostsController(IMapper mapper, IPostService postService, IPostRepository postRepository, INotificador notificador) : base(notificador)
+        private readonly IComentarioService _comentarioService;
+        private readonly IComentarioRepository _comentarioRepository;
+        public ComentariosController(IMapper mapper, IComentarioService comentarioService, IComentarioRepository comentarioRepository, INotificador notificador) : base(notificador)
         {
             _mapper = mapper;
-            _postService = postService;
-            _postRepository = postRepository;
+            _comentarioService = comentarioService;
+            _comentarioRepository = comentarioRepository;
         }
 
         [HttpGet]
-        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<IEnumerable<PostModel>>> ObterTodos()
+        public async Task<ActionResult<IEnumerable<ComentarioModel>>> ObterTodos()
         {
-            var posts = _mapper.Map<IEnumerable<PostModel>>(await _postRepository.Listar());
+            var comentarios = _mapper.Map<IEnumerable<ComentarioModel>>(await _comentarioRepository.Listar());
 
-            if (posts == null) return NotFound();
+            if (comentarios == null) return NotFound();
 
-            return posts.ToList();
+            return comentarios.ToList();
         }
 
-        [AllowAnonymous]
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<PostModel>> ObterPorId(Guid id)
+        public async Task<ActionResult<ComentarioModel>> ObterPorId(Guid id)
         {
-            var postModel = await ObterPostModel(id);
+            var comentario = await ObterComentarioModel(id);
 
-            if (postModel == null) return NotFound();
+            if (comentario == null) return NotFound();
 
-            return postModel;
+            return comentario;
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<PostModel>> Adicionar(PostModel postModel)
+        public async Task<ActionResult<ComentarioModel>> Adicionar(ComentarioModel comentarioModel)
         {
 
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            await _postService.Adicionar(_mapper.Map<Post>(postModel));
+            var comentario = _mapper.Map<Comentario>(comentarioModel);
 
-            return CustomResponse(HttpStatusCode.Created, await ObterPostModel(postModel.Id));
+            await _comentarioService.Adicionar(comentario);
+
+            return CustomResponse(HttpStatusCode.Created, await ObterComentarioModel(comentarioModel.Id));
         }
 
         [HttpPut("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<PostModel>> Atualizar(Guid id, PostModel postModel)
+        public async Task<ActionResult<ComentarioModel>> Atualizar(Guid id, ComentarioModel comentarioModel)
         {
-            if (id != postModel.Id)
+            if (id != comentarioModel.Id)
             {
                 NotificarErro("O id informado não é o mesmo que foi passado na query");
                 return CustomResponse();
@@ -80,7 +80,7 @@ namespace BlogExpert.Api.Controllers
 
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            await _postService.Atualizar(_mapper.Map<Post>(postModel));
+            await _comentarioService.Atualizar(_mapper.Map<Comentario>(comentarioModel));
 
             return CustomResponse(HttpStatusCode.NoContent);
         }
@@ -89,16 +89,16 @@ namespace BlogExpert.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<PostModel>> Excluir(Guid id)
+        public async Task<ActionResult<ComentarioModel>> Excluir(Guid id)
         {
-            await _postService.Remover(id);
+            await _comentarioService.Remover(id);
 
             return CustomResponse(HttpStatusCode.NoContent);
         }
 
-        private async Task<PostModel> ObterPostModel(Guid id)
+        private async Task<ComentarioModel> ObterComentarioModel(Guid id)
         {
-            return _mapper.Map<PostModel>(await _postRepository.ObterPorId(id));
+            return _mapper.Map<ComentarioModel>(await _comentarioRepository.ObterPorId(id));
         }
     }
 }

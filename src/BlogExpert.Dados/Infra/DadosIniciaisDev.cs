@@ -25,8 +25,8 @@ namespace BlogExpert.Dados.Infra
                 Id = idAutorMarcelo,
                 Nome = "Marcelo Menezes",
                 Ativo = true,
-                Email = "marcelo@solusist.com.br",
-                EmailCriacao = "marcelo@solusist.com.br",
+                Email = "marcelo@be.net",
+                EmailCriacao = "marcelo@be.net",
                 DataCriacao = dataCriacaoComum
             });
 
@@ -35,8 +35,8 @@ namespace BlogExpert.Dados.Infra
                 Id = idAutorMayane,
                 Nome = "Mayane Menezes",
                 Ativo = true,
-                Email = "mayane@solusist.com.br",
-                EmailCriacao = "mayane@solusist.com.br",
+                Email = "mayane@be.net",
+                EmailCriacao = "mayane@be.net",
                 DataCriacao = dataCriacaoComum
             });
 
@@ -51,7 +51,7 @@ namespace BlogExpert.Dados.Infra
                 AutorId = idAutorMarcelo,
                 Titulo = "Importância do planejamento",
                 Descricao = "Planejar é uma atividade essencial para o nosso dia a dia. Já dizia um velho sábio que para quem não sabe para onde quer ir todos os caminhos levam a lugar nenhum.",
-                EmailCriacao = "marcelo@solusist.com.br",
+                EmailCriacao = "marcelo@be.net",
                 DataCriacao = DateTime.Now
             });
 
@@ -61,7 +61,7 @@ namespace BlogExpert.Dados.Infra
                 AutorId = idAutorMayane,
                 Titulo = "É preciso saber viver",
                 Descricao = "Quem espera que a vida seja feita de ilusão pode até ficar maluco ou morrer na solidão.",
-                EmailCriacao = "mayane@solusist.com.br",
+                EmailCriacao = "mayane@be.net",
                 DataCriacao = DateTime.Now
             });
 
@@ -72,7 +72,7 @@ namespace BlogExpert.Dados.Infra
                 Id = Guid.NewGuid(),
                 PostId = idPostMarcelo,
                 Descricao = "Concordo em gênero, número e grau.",
-                EmailCriacao = "mayane@solusist.com.br",
+                EmailCriacao = "mayane@be.net",
                 DataCriacao = DateTime.Now
             });
 
@@ -81,7 +81,7 @@ namespace BlogExpert.Dados.Infra
                 Id = Guid.NewGuid(),
                 PostId = idPostMarcelo,
                 Descricao = "Sem planejamento não dá pra viver.",
-                EmailCriacao = "blogexpert@blogexpert.com",
+                EmailCriacao = "be@be.net",
                 DataCriacao = DateTime.Now
             });
 
@@ -90,7 +90,7 @@ namespace BlogExpert.Dados.Infra
                 Id = Guid.NewGuid(),
                 PostId = idPostMayane,
                 Descricao = "Toda pedra no caminho você pode retirar.",
-                EmailCriacao = "marcelo@solusist.com.br",
+                EmailCriacao = "marcelo@be.net",
                 DataCriacao = DateTime.Now
             });
 
@@ -99,7 +99,7 @@ namespace BlogExpert.Dados.Infra
                 Id = Guid.NewGuid(),
                 PostId = idPostMayane,
                 Descricao = "Numa flor que tem espinhos você pode se arranhar.",
-                EmailCriacao = "blogexpert@blogexpert.com",
+                EmailCriacao = "be@be.net",
                 DataCriacao = DateTime.Now
             });
 
@@ -116,10 +116,10 @@ namespace BlogExpert.Dados.Infra
             await context.Users.AddAsync(new IdentityUser
             {
                 Id = idUsuarioAdmin,
-                UserName = "admin@admin.com",
-                NormalizedUserName = "ADMIN@ADMIN.COM",
-                Email = "admin@admin.com",
-                NormalizedEmail = "ADMIN@ADMIN.COM",
+                UserName = "admin@be.net",
+                NormalizedUserName = "ADMIN@BE.NET",
+                Email = "admin@be.net",
+                NormalizedEmail = "ADMIN@BE.NET",
                 AccessFailedCount = 0,
                 LockoutEnabled = false,
                 PasswordHash = "AQAAAAIAAYagAAAAEBUFkipKfmhLc8SX3nwBA/9/B8zd9taBCG4XrTuksoWHhTr5FYfXZmolEbsPfz7f5A==",
@@ -132,10 +132,10 @@ namespace BlogExpert.Dados.Infra
             await context.Users.AddAsync(new IdentityUser
             {
                 Id = Guid.NewGuid().ToString(),
-                UserName = "blogexpert@blogexpert.com",
-                NormalizedUserName = "BLOGEXPERT@BLOGEXPERT.COM",
-                Email = "blogexpert@blogexpert.com",
-                NormalizedEmail = "BLOGEXPERT@BLOGEXPERT.COM",
+                UserName = "bet@be.net",
+                NormalizedUserName = "BE@BE.NET",
+                Email = "be@be.net",
+                NormalizedEmail = "BE@BE.NET",
                 AccessFailedCount = 0,
                 LockoutEnabled = false,
                 PasswordHash = "AQAAAAIAAYagAAAAEBUFkipKfmhLc8SX3nwBA/9/B8zd9taBCG4XrTuksoWHhTr5FYfXZmolEbsPfz7f5A==",
@@ -148,10 +148,10 @@ namespace BlogExpert.Dados.Infra
             await context.Users.AddAsync(new IdentityUser
             {
                 Id = Guid.NewGuid().ToString(),
-                UserName = "marcelo@solusist.com.br",
-                NormalizedUserName = "MARCELO@SOLUSIST.COM.BR",
-                Email = "marcelo@solusist.com.br",
-                NormalizedEmail = "MARCELO@SOLUSIST.COM.BR",
+                UserName = "marcelo@be.net",
+                NormalizedUserName = "MARCELO@BE.NET",
+                Email = "marcelo@be.net",
+                NormalizedEmail = "MARCELO@BE.NET",
                 AccessFailedCount = 0,
                 LockoutEnabled = false,
                 PasswordHash = "AQAAAAIAAYagAAAAEBUFkipKfmhLc8SX3nwBA/9/B8zd9taBCG4XrTuksoWHhTr5FYfXZmolEbsPfz7f5A==",
@@ -164,10 +164,10 @@ namespace BlogExpert.Dados.Infra
             await context.Users.AddAsync(new IdentityUser
             {
                 Id = Guid.NewGuid().ToString(),
-                UserName = "mayane@solusist.com.br",
-                NormalizedUserName = "MAYANE@SOLUSIST.COM.BR",
-                Email = "mayane@solusist.com.br",
-                NormalizedEmail = "MAYANE@SOLUSIST.COM.BR",
+                UserName = "mayane@be.net",
+                NormalizedUserName = "MAYANE@BE.NET",
+                Email = "mayane@be.net",
+                NormalizedEmail = "MAYANE@BE.NET",
                 AccessFailedCount = 0,
                 LockoutEnabled = false,
                 PasswordHash = "AQAAAAIAAYagAAAAEBUFkipKfmhLc8SX3nwBA/9/B8zd9taBCG4XrTuksoWHhTr5FYfXZmolEbsPfz7f5A==",

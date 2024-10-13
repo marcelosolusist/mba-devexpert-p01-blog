@@ -17,19 +17,27 @@ namespace BlogExpert.Negocio.Services
         {
             if (!ExecutarValidacao(new AutorValidation(), autor)) return;
 
+            var autorDuplicado = _autorRepository.Buscar(a => a.Id == autor.Id);
+            if (autorDuplicado.Result.Any())
+            {
+                Notificar("Já existe um autor com o Id informado.");
+                return;
+            }
+
             if (autor.Email != _contaAutenticada.Email)
             {
                 Notificar("Só é possível criar um autor com o email da conta autenticada.");
                 return;
             }
 
+            autor.EmailCriacao = _contaAutenticada.Email;
+            autor.DataCriacao = DateTime.Now;
+
             if (_autorRepository.Buscar(a => a.Email == autor.Email).Result.Any())
             {
                 Notificar("Já existe um autor com o email infomado.");
                 return;
             }
-
-            autor.EmailCriacao = _contaAutenticada.Email;
 
             if (!VerificarSePodeManipularAutor(autor)) return;
 

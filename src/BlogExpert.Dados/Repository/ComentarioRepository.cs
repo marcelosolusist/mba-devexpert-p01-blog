@@ -15,5 +15,10 @@ namespace BlogExpert.Dados.Repository
                                        .ThenInclude(p => p.Autor)
                                        .FirstOrDefaultAsync(c => c.Id == id);
         }
+
+        public override async Task<List<Comentario>> Listar()
+        {
+            return await Db.Comentarios.OrderByDescending(c => c.DataCriacao).ToListAsync();
+        }
     }
 }

@@ -17,6 +17,13 @@ namespace BlogExpert.Negocio.Services
         {
             if (!ExecutarValidacao(new PostValidation(), post)) return;
 
+            var postDuplicado = _postRepository.Buscar(p => p.Id == post.Id);
+            if (postDuplicado.Result.Any())
+            {
+                Notificar("Já existe um post com o Id informado.");
+                return;
+            }
+
             if (_postRepository.Buscar(p => p.Titulo == post.Titulo).Result.Any())
             {
                 Notificar("Já existe post com o título infomado.");
@@ -28,12 +35,13 @@ namespace BlogExpert.Negocio.Services
                 Notificar("Autor não informado ou inválido.");
             }
 
+            post.EmailCriacao = _contaAutenticada.Email;
+            post.DataCriacao = DateTime.Now;
+
             if (!await VerificarSeAutorValidoEPodeManipularPost(post, true))
             {
                 return;
             }
-
-            post.EmailCriacao = _contaAutenticada.Email;
 
             await _postRepository.Adicionar(post);
         }
