@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace BlogExpert.Negocio.Interfaces
+﻿namespace BlogExpert.Negocio.Interfaces
 {
     public interface IContaAutenticada
     {

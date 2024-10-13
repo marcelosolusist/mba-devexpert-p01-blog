@@ -26,7 +26,7 @@ namespace BlogExpert.Negocio.Services
         {
             if (!ExecutarValidacao(new ComentarioValidation(), comentario)) return;
 
-            if (!VerificarSePodeManipularComentario(comentario)) return;
+            if (!VerificarSePodeManipularComentario(await _comentarioRepository.ObterPorId(comentario.Id))) return;
 
             await _comentarioRepository.Atualizar(comentario);
         }
@@ -53,10 +53,25 @@ namespace BlogExpert.Negocio.Services
 
         private bool VerificarSePodeManipularComentario(Comentario comentario)
         {
-            if (_contaAutenticada.EhAdministrador || comentario.EmailCriacao == _contaAutenticada.Email) return true;
+            if (_contaAutenticada.EhAdministrador || comentario.EmailCriacao == _contaAutenticada.Email || comentario.Post.Autor.Email == _contaAutenticada.Email) return true;
 
             Notificar("A conta autenticada não pode manipular esse comentário.");
             return false;
+        }
+
+        public async Task<Comentario> ObterParaEdicao(Guid id)
+        {
+            var comentario = await _comentarioRepository.ObterPorId(id);
+
+            if (comentario == null)
+            {
+                Notificar("Comentário não existe!");
+                return null;
+            }
+
+            if (!VerificarSePodeManipularComentario(comentario)) return null;
+
+            return comentario;
         }
     }
 }

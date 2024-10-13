@@ -1,0 +1,50 @@
+﻿@model BlogExpert.Mvc.ViewModels.ComentarioViewModel
+
+@{
+    ViewData["Title"] = "Excluir Comentário";
+}
+<h1>@ViewData["Title"]</h1>
+<vc:Summary></vc:Summary>
+<hr />
+@if (Model != null && !string.IsNullOrEmpty(Model.Id.ToString()))
+{
+    <h4>Esta ação será permanente!</h4>
+    <hr />
+
+    <div class="row">
+        
+        <div class="col-md-10">
+            <form asp-action="DeleteComentario">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="PostId" />
+                <div class="card">
+                    <div class="form-group">
+                        <b>Descrição:</b> @Model.Descricao
+                        <br />
+                        <b>Data:</b> @Model.DataCriacao
+                        <br />
+                        <b>Usuário:</b> @Model.EmailCriacao
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <input type="submit" value="Excluir" class="btn btn-danger" />
+                    <a class="btn btn-info" asp-action="Index">Voltar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr />
+    <h2>Post de exclusão do comentário</h2>
+    <hr />
+    <partial name="_ListaPost" model="@Model.Post" />
+}
+else
+{
+    <a class="btn btn-info" asp-action="Index">Voltar</a>
+}
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

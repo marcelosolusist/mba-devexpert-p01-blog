@@ -8,8 +8,6 @@ namespace BlogExpert.Dados.Mappings
     {
         public void Configure(EntityTypeBuilder<Comentario> builder)
         {
-            //builder.HasKey(comentario => comentario.Id);
-
             builder.Property(comentario => comentario.Descricao)
                 .IsRequired()
                 .HasColumnType("varchar(2000)");

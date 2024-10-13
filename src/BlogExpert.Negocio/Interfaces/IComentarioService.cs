@@ -7,5 +7,6 @@ namespace BlogExpert.Negocio.Interfaces
         Task Adicionar(Comentario comentario);
         Task Atualizar(Comentario comentario);
         Task Remover(Guid id);
+        Task<Comentario> ObterParaEdicao(Guid id);
     }
 }
