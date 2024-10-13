@@ -11,80 +11,84 @@
 }
 @foreach (var post in Model)
 {
-    <div class="card">
-        <dl class="card">
-            <dd class="card-header">
+    <div class="card bottom-0 top-0">
+        <div class="card">
+            <div class="card-header">
                 <h1>@post.Titulo</h1>
-            </dd>
-            <dd class="card-body">
+            </div>
+            <div class="card-body">
                 <h2>@post.Descricao</h2>
-            </dd>
-            <dd class="card-footer">
+            </div>
+            <div class="card-footer">
                 <table border="0">
                     <tr>
-                        <td>
-                            @if (SignInManager.IsSignedIn(User))
-                            {
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <td>
+
                                 <a class="btn btn-info" asp-action="Details" asp-route-id="@post.Id">Detalhes</a>
                                 <a class="btn btn-warning" asp-action="Edit" asp-route-id="@post.Id">Editar</a>
                                 <a class="btn btn-danger" asp-action="Delete" asp-route-id="@post.Id">Excluir</a>
-                            }
-                        </td>
-                        <td class="col-1"></td>
+
+                            </td>
+                            <td class="col-1"></td>
+                        }
                         <td>
-                            <div align="right">
+                            <div>
                                 <b>Autor:</b> @post.Autor.Nome - <b>Publicação:</b> @post.DataCriacao
                             </div>
                         </td>
                     </tr>
                 </table>
-            </dd>
-        </dl>
-        @if (SignInManager.IsSignedIn(User))
-        {
-            <dd class="col-sm-10">
-                <a class="btn btn-info" asp-action="CreateComentario">Novo comentário</a>
-            </dd>
-        }
-        <table class="table table-hover">
-            <thead class="thead-dark">
-                <tr>
-                    <th>
-                        Comentário
-                    </th>
-                    <th>
-                        Data
-                    </th>
-                    <th>
-                        Usuário
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach (var comentario in post.Comentarios)
+            </div>
+        </div>
+        <div class="card bottom-0 top-0 ">
+            @if (SignInManager.IsSignedIn(User))
             {
-                <tr>
-                    <td>
-                        @comentario.Descricao
-                    </td>
-                    <td>
-                        @comentario.DataCriacao
-                    </td>
-                    <td>
-                        @comentario.EmailCriacao
-                    </td>
-                    <td class="text-right">
-                        @if (SignInManager.IsSignedIn(User))
-                        {
-                            <a class="btn btn-warning" asp-action="EditComentario" asp-route-id="@comentario.Id"><spam class="fa fa-pencil-alt"></spam></a>
-                            <a class="btn btn-danger" asp-action="DeleteComentario" asp-route-id="@comentario.Id"><spam class="fa fa-trash"></spam></a>
-                        }
-                    </td>
-                </tr>
+                <div class="card-header">
+                    <a class="btn btn-info" asp-action="CreateComentario">Novo comentário</a>
+                </div>
             }
-        </tbody>
-        </table>
+            <table class="table table-hover">
+                <thead class="card-header">
+                    <tr>
+                        <th>
+                            Comentário
+                        </th>
+                        <th>
+                            Data
+                        </th>
+                        <th>
+                            Usuário
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="card-body">
+                @foreach (var comentario in post.Comentarios)
+                {
+                    <tr>
+                        <td>
+                            @comentario.Descricao
+                        </td>
+                        <td>
+                            @comentario.DataCriacao
+                        </td>
+                        <td>
+                            @comentario.EmailCriacao
+                        </td>
+                        <td class="text-right">
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <a class="btn btn-warning" asp-action="EditComentario" asp-route-id="@comentario.Id"><spam class="fa fa-pencil-alt"></spam></a>
+                                <a class="btn btn-danger" asp-action="DeleteComentario" asp-route-id="@comentario.Id"><spam class="fa fa-trash"></spam></a>
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
      </div>
      <br />
 }
