@@ -53,6 +53,7 @@ A estrutura do projeto é organizada da seguinte forma:
 
 ## **5. Funcionalidades Implementadas**
 
+- **CRUD para Autores:** Permite incluir, editar, visualizar e excluir autores. Apenas o usuário autenticado pode se cadastrar como um autor.
 - **CRUD para Posts e Comentários:** Permite criar, editar, visualizar e excluir posts e comentários.
 - **Autenticação e Autorização:** Diferenciação entre usuários comuns e administradores.
 - **API RESTful:** Exposição de endpoints para operações CRUD via API.
