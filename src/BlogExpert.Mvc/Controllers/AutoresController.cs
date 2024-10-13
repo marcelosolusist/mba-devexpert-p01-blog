@@ -2,6 +2,7 @@
 using BlogExpert.Mvc.ViewModels;
 using BlogExpert.Negocio.Entities;
 using BlogExpert.Negocio.Interfaces;
+using BlogExpert.Negocio.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -72,12 +73,7 @@ namespace BlogExpert.Mvc.Controllers
         [Route("editar-autor/{id:guid}")]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var autorViewModel = await ObterAutor(id);
-
-            if (autorViewModel == null)
-            {
-                return NotFound();
-            }
+            var autorViewModel = await ObterAutorParaEdicao(id);
 
             return View(autorViewModel);
         }
@@ -101,12 +97,7 @@ namespace BlogExpert.Mvc.Controllers
         [Route("excluir-autor/{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var autorViewModel = await ObterAutor(id);
-
-            if (autorViewModel == null)
-            {
-                return NotFound();
-            }
+            var autorViewModel = await ObterAutorParaEdicao(id);
 
             return View(autorViewModel);
         }
@@ -129,6 +120,11 @@ namespace BlogExpert.Mvc.Controllers
         private async Task<AutorViewModel> ObterAutor(Guid id)
         {
             return _mapper.Map<AutorViewModel>(await _autorRepository.ObterPorId(id));
+        }
+
+        private async Task<AutorViewModel> ObterAutorParaEdicao(Guid id)
+        {
+            return _mapper.Map<AutorViewModel>(await _autorService.ObterParaEdicao(id));
         }
     }
 }

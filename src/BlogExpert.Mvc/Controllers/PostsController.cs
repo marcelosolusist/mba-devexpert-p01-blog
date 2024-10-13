@@ -2,7 +2,6 @@
 using BlogExpert.Mvc.ViewModels;
 using BlogExpert.Negocio.Entities;
 using BlogExpert.Negocio.Interfaces;
-using BlogExpert.Negocio.Notificacoes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,22 +15,34 @@ namespace BlogExpert.Mvc.Controllers
         private readonly IPostRepository _postRepository;
         private readonly IMapper _mapper;
         private readonly IContaAutenticada _contaAutenticada;
+        private readonly IComentarioService _comentarioService;
+        private readonly IComentarioRepository _comentarioRepository;
 
         public PostsController(IMapper mapper,
                                       IPostService postService,
                                       INotificador notificador,
                                       IPostRepository postRepository,
-                                      IContaAutenticada contaAutenticada) : base(notificador)
+                                      IContaAutenticada contaAutenticada,
+                                      IComentarioService comentarioService,
+                                      IComentarioRepository comentarioRepository) : base(notificador)
         {
             _mapper = mapper;
             _postService = postService;
             _postRepository = postRepository;
             _contaAutenticada = contaAutenticada;
+            _comentarioService = comentarioService;
+            _comentarioRepository = comentarioRepository;
         }
 
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
+            ViewData["detalhar"] = "true";
+            ViewData["editar"] = "true";
+            ViewData["excluir"] = "true";
+            ViewData["incluircomentario"] = "true";
+            ViewData["editarcomentario"] = "true";
+            ViewData["excluircomentario"] = "true";
             return View(_mapper.Map<IEnumerable<PostViewModel>>(await _postRepository.Listar()));
         }
 
@@ -45,6 +56,12 @@ namespace BlogExpert.Mvc.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["editar"] = "true";
+            ViewData["excluir"] = "true";
+            ViewData["incluircomentario"] = "true";
+            ViewData["editarcomentario"] = "true";
+            ViewData["excluircomentario"] = "true";
 
             return View(postViewModel);
         }
@@ -113,13 +130,13 @@ namespace BlogExpert.Mvc.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var post = await ObterPost(id);
+            var postViewModel = await ObterPost(id);
 
-            if (post == null) return NotFound();
+            if (postViewModel == null) return NotFound();
 
             await _postService.Remover(id);
 
-            if (!OperacaoValida()) return View(post);
+            if (!OperacaoValida()) return View(postViewModel);
 
             return RedirectToAction("Index");
         }
@@ -138,6 +155,98 @@ namespace BlogExpert.Mvc.Controllers
             var listaDeAutores = await _postService.ListarAutoresDaContaAutenticada();
             if (!string.IsNullOrEmpty(autorId)) return new SelectList(listaDeAutores, "Id", "Nome", autorId);
             return new SelectList(listaDeAutores, "Id", "Nome");
+        }
+
+        [Route("novo-comentario")]
+        public async Task<IActionResult> CreateComentario(Guid id)
+        {
+            var comentarioViewModel = new ComentarioViewModel() { PostId = id };
+            comentarioViewModel.Post = await ObterPost(id);
+            return View(comentarioViewModel);
+        }
+
+        [Route("novo-comentario")]
+        [HttpPost]
+        public async Task<IActionResult> CreateComentario(ComentarioViewModel comentarioViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                comentarioViewModel.Post = await ObterPost(comentarioViewModel.PostId);
+                return View(comentarioViewModel);
+            }
+            var comentario = _mapper.Map<Comentario>(comentarioViewModel);
+            await _comentarioService.Adicionar(comentario);
+
+            if (!OperacaoValida()) return View(comentarioViewModel);
+
+            return RedirectToAction("Index");
+        }
+
+        [Route("editar-comentario/{id:guid}")]
+        public async Task<IActionResult> EditComentario(Guid id)
+        {
+            var comentarioViewModel = await ObterComentarioParaEdicao(id);
+
+            return View(comentarioViewModel);
+        }
+
+        [Route("editar-comentario/{id:guid}")]
+        [HttpPost]
+        public async Task<IActionResult> EditComentario(Guid id, ComentarioViewModel comentarioViewModel)
+        {
+            comentarioViewModel.Post = null;
+
+            if (id != comentarioViewModel.Id) return NotFound();
+
+            if (!ModelState.IsValid) return View(comentarioViewModel);
+
+            var comentario = _mapper.Map<Comentario>(comentarioViewModel);
+            await _comentarioService.Atualizar(comentario);
+
+            if (!OperacaoValida()) return View(await ObterComentario(id));
+
+            return RedirectToAction("Index");
+        }
+
+        [Route("excluir-comentario/{id:guid}")]
+        public async Task<IActionResult> DeleteComentario(Guid id)
+        {
+            var comentarioViewModel = await ObterComentarioParaEdicao(id);
+
+            return View(comentarioViewModel);
+        }
+
+        [Route("excluir-comentario/{id:guid}")]
+        [HttpPost, ActionName("DeleteComentario")]
+        public async Task<IActionResult> DeleteComentarioConfirmed(Guid id)
+        {
+            var comentarioViewModel = await ObterComentario(id);
+
+            if (comentarioViewModel == null) return NotFound();
+
+            await _comentarioService.Remover(id);
+
+            if (!OperacaoValida()) return View(await ObterComentario(id));
+
+            return RedirectToAction("Index");
+        }
+
+        private async Task<ComentarioViewModel> ObterComentario(Guid id)
+        {
+            var comentarioViewModel = _mapper.Map<ComentarioViewModel>(await _comentarioRepository.ObterPorId(id));
+            return await PreencherPostDoComentarioViewModel(comentarioViewModel);
+        }
+
+        private async Task<ComentarioViewModel> ObterComentarioParaEdicao(Guid id)
+        {
+            var comentarioViewModel = _mapper.Map<ComentarioViewModel>(await _comentarioService.ObterParaEdicao(id));
+            return await PreencherPostDoComentarioViewModel(comentarioViewModel);
+        }
+
+        private async Task<ComentarioViewModel> PreencherPostDoComentarioViewModel(ComentarioViewModel comentarioViewModel)
+        {
+            if (comentarioViewModel != null) comentarioViewModel.Post = await ObterPost(comentarioViewModel.PostId);
+            return comentarioViewModel;
         }
     }
 }

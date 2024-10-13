@@ -8,8 +8,6 @@ namespace BlogExpert.Dados.Mappings
     {
         public void Configure(EntityTypeBuilder<Post> builder)
         {
-            //builder.HasKey(post => post.Id);
-
             builder.Property(post => post.Titulo)
                 .IsRequired()
                 .HasColumnType("varchar(100)");

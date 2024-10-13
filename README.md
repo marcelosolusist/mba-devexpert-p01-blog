@@ -4,7 +4,11 @@
 
 Bem-vindo ao repositório do projeto **[BlogExpert]**. Este projeto é uma entrega do MBA DevXpert Full Stack .NET e é referente ao módulo **Introdução ao Desenvolvimento ASP.NET Core**.
 O objetivo principal é desenvolver uma aplicação de blog que permite aos usuários criar, editar, visualizar e excluir posts e comentários, tanto através de uma interface web utilizando MVC quanto através de uma API RESTful.
-Descreva livremente mais detalhes do seu projeto aqui.
+A aplicação foi dividida em camadas para separar algumas reponsabilidades, principalmente em relação ao repositório de dados e de negócio. As validações são garantidas na camada de negócios.
+Para facilitar os testes por quem baixar o projeto foi adicionado um tratamento para a criação do banco de dados junto com uma massa de dados que preenche usuários, autores, posts e comentários.
+O usuário admin@be.net é o administrador que possui a role admin na carga inicial. Os demais usuários são comuns e não possuem a role admin.
+Apenas usuários com a role admin conseguem manipular todos os dados de forma livre no blog. Os usuários comuns só conseguem manipular os dados por eles inseridos.
+Os autores também conseguem manipular todos os dados dos posts que lhe são atribuídos a autoria e os comentários vinculados a esses posts.
 
 ### **Autor**
 - **Marcelo Santos Menezes**
@@ -38,7 +42,6 @@ O projeto consiste em:
 
 A estrutura do projeto é organizada da seguinte forma:
 
-
 - src/
   - BlogExpert.Mvc/ - Projeto MVC
   - BlogExpert.Api/ - API RESTful
@@ -67,22 +70,29 @@ A estrutura do projeto é organizada da seguinte forma:
 ### **Passos para Execução**
 
 1. **Clone o Repositório:**
-   - `git clone https://github.com/seu-usuario/nome-do-repositorio.git`
+   - `git clone https://github.com/marcelosolusist/mba-devexpert-p01-blog.git`
    - `cd nome-do-repositorio`
 
 2. **Configuração do Banco de Dados:**
-   - No arquivo `appsettings.json`, configure a string de conexão do SQL Server.
-   - Rode o projeto para que a configuração do Seed crie o banco e popule com os dados básicos
+   - No arquivo `appsettings.json`, configure a string de conexão do SQL Server nos projetos BlogExpert.Mvc e BlogExpert.Api.
+   - Rode o projeto para que a configuração do Seed crie o banco e popule com os dados básicos.
 
 3. **Executar a Aplicação MVC:**
    - `cd src/BlogExpert.Mvc/`
    - `dotnet run`
-   - Acesse a aplicação em: http://localhost:5000
+   - Acesse a aplicação em: http://localhost:5249/
 
 4. **Executar a API:**
    - `cd src/BlogExpert.Api/`
    - `dotnet run`
-   - Acesse a documentação da API em: http://localhost:5001/swagger
+   - Acesse a documentação da API em: http://localhost:5078/swagger/ 
+   
+5. **Usuários registrados na carga inicial:**
+   - admin@be.net (usuário administrador)
+   - be@be.net (usuário comum e NÃO possui autor vinculado)
+   - marcelo@be.net (usuário comum com autor vinculado)
+   - mayane@be.net (usuário comum com autor vinculado)
+   - A senha para todos esses usuários é a mesma: Expert@123
 
 ## **7. Instruções de Configuração**
 
@@ -93,7 +103,7 @@ A estrutura do projeto é organizada da seguinte forma:
 
 A documentação da API está disponível através do Swagger. Após iniciar a API, acesse a documentação em:
 
-http://localhost:5001/swagger
+http://localhost:5078/swagger/ 
 
 ## **9. Avaliação**
 

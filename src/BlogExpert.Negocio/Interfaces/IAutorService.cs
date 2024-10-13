@@ -7,5 +7,6 @@ namespace BlogExpert.Negocio.Interfaces
         Task Adicionar(Autor autor);
         Task Atualizar(Autor autor);
         Task Remover(Guid id);
+        Task<Autor> ObterParaEdicao(Guid id);
     }
 }
