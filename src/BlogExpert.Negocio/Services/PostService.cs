@@ -23,6 +23,11 @@ namespace BlogExpert.Negocio.Services
                 return;
             }
 
+            if (string.IsNullOrEmpty(post.AutorId.ToString()) || post.AutorId.ToString() == "00000000-0000-0000-0000-000000000000")
+            {
+                Notificar("Autor não informado ou inválido.");
+            }
+
             if (!await VerificarSeAutorValidoEPodeManipularPost(post, true))
             {
                 return;
@@ -90,10 +95,20 @@ namespace BlogExpert.Negocio.Services
 
         public async Task<List<Autor>> ListarAutoresDaContaAutenticada()
         {
-
-            if (!_contaAutenticada.EhAdministrador) return _autorRepository.Buscar(a => a.Email == _contaAutenticada.Email).Result.ToList();
-
-            return _autorRepository.Buscar(a => !string.IsNullOrEmpty(a.Nome)).Result.OrderBy(a => a.Nome).ToList();
+            var listaAutores = new List<Autor>();
+            if (!_contaAutenticada.EhAdministrador)
+            {
+                listaAutores = _autorRepository.Buscar(a => a.Email == _contaAutenticada.Email).Result.ToList();
+            }
+            else
+            {
+                listaAutores = _autorRepository.Buscar(a => !string.IsNullOrEmpty(a.Nome)).Result.OrderBy(a => a.Nome).ToList();
+            }
+            if (listaAutores.Count() <= 0)
+            {
+                Notificar("Apenas autores ou administradores podem manipular posts.");
+            }
+            return listaAutores;
         }
 
         public void Dispose()

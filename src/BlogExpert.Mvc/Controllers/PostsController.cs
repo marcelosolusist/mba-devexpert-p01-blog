@@ -2,7 +2,6 @@
 using BlogExpert.Mvc.ViewModels;
 using BlogExpert.Negocio.Entities;
 using BlogExpert.Negocio.Interfaces;
-using BlogExpert.Negocio.Notificacoes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

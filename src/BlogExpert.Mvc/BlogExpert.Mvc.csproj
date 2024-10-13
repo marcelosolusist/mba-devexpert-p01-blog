@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-BlogExpert.Mvc-eff49568-e184-498e-a6d5-832591fabaea</UserSecretsId>
+    <UserSecretsId>BlogExpert-eff49568-e184-498e-a6d5-832591fabaea</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
