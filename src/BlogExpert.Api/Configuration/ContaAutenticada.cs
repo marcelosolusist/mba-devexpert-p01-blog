@@ -1,6 +1,6 @@
 ﻿using BlogExpert.Negocio.Interfaces;
 
-namespace BlogExpert.Mvc.Configurations
+namespace BlogExpert.Api.Configuration
 {
     public class ContaAutenticada : IContaAutenticada
     {

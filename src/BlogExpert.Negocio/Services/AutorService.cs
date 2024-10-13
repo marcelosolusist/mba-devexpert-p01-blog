@@ -17,6 +17,12 @@ namespace BlogExpert.Negocio.Services
         {
             if (!ExecutarValidacao(new AutorValidation(), autor)) return;
 
+            if (autor.Email != _contaAutenticada.Email)
+            {
+                Notificar("Só é possível criar um autor com o email da conta autenticada.");
+                return;
+            }
+
             if (_autorRepository.Buscar(a => a.Email == autor.Email).Result.Any())
             {
                 Notificar("Já existe um autor com o email infomado.");
