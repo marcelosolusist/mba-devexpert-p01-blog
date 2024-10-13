@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.10.0" />
+    <Compile Remove="Seguranca\**" />
+    <EmbeddedResource Remove="Seguranca\**" />
+    <None Remove="Seguranca\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Seguranca\" />
+    <PackageReference Include="FluentValidation" Version="11.10.0" />
   </ItemGroup>
 
 </Project>

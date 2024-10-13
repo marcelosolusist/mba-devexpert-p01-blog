@@ -69,6 +69,25 @@ namespace BlogExpert.Negocio.Services
             await _postRepository.Remover(id);
         }
 
+        public async Task<Post> ObterParaEdicao(Guid id)
+        {
+            var post = await _postRepository.ObterPorId(id);
+
+            if (post == null)
+            {
+                Notificar("Post não existe!");
+                return null;
+            }
+
+            if (!_contaAutenticada.EhAdministrador && post.Autor.Email != _contaAutenticada.Email)
+            {
+                Notificar("A conta autenticada não pode manipular o post selecionado.");
+                return null;
+            }
+
+            return post;
+        }
+
         public async Task<List<Autor>> ListarAutoresDaContaAutenticada()
         {
 

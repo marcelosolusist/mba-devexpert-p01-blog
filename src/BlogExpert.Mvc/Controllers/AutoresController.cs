@@ -27,14 +27,12 @@ namespace BlogExpert.Mvc.Controllers
             _contaAutenticada = contaAutenticada;
         }
 
-        [AllowAnonymous]
         [Route("lista-de-autores")]
         public async Task<IActionResult> Index()
         {
             return View(_mapper.Map<IEnumerable<AutorViewModel>>(await _autorRepository.Listar()));
         }
 
-        [AllowAnonymous]
         [Route("dados-do-autor/{id:guid}")]
         public async Task<IActionResult> Details(Guid id)
         {
@@ -49,7 +47,6 @@ namespace BlogExpert.Mvc.Controllers
         }
 
         [Route("novo-autor")]
-        //[Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             var autorViewModel = new AutorViewModel();

@@ -18,7 +18,17 @@ namespace BlogExpert.Dados.Repository
 
         public override async Task<Post> ObterPorId(Guid id)
         {
-            return await Db.Posts.Include(p => p.Comentarios.OrderByDescending(c => c.DataCriacao)).FirstOrDefaultAsync(p => p.Id == id);  
+            return await Db.Posts.Include(p => p.Autor)
+                                 .Include(p => p.Comentarios.OrderByDescending(c => c.DataCriacao))
+                                 .FirstOrDefaultAsync(p => p.Id == id);  
+        }
+
+        public override async Task<List<Post>> Listar()
+        {
+            return await Db.Posts.Include(p => p.Autor)
+                                 .Include(p => p.Comentarios.OrderByDescending(c => c.DataCriacao))
+                                 .OrderByDescending(p => p.DataCriacao)
+                                 .ToListAsync();
         }
     }
 }
