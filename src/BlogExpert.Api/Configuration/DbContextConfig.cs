@@ -7,10 +7,16 @@ namespace BlogExpert.Api.Configuration
     {
         public static WebApplicationBuilder AddDbContextConfig(this WebApplicationBuilder builder)
         {
-            builder.Services.AddDbContext<BlogExpertDbContext>(options =>
+            if (builder.Environment.IsDevelopment())
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });
+                builder.Services.AddDbContext<BlogExpertDbContext>(options =>
+                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnectionLite")));
+            }
+            else
+            {
+                builder.Services.AddDbContext<BlogExpertDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            }
 
             return builder;
         }
