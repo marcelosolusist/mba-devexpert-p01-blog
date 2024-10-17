@@ -37,15 +37,14 @@ namespace BlogExpert.Mvc.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
+            ViewData["detalhartitulo"] = "true";
             ViewData["detalhar"] = "true";
             ViewData["editar"] = "true";
             ViewData["excluir"] = "true";
-            ViewData["incluircomentario"] = "true";
-            ViewData["editarcomentario"] = "true";
-            ViewData["excluircomentario"] = "true";
             return View(_mapper.Map<IEnumerable<PostViewModel>>(await _postRepository.Listar()));
         }
 
+        [AllowAnonymous]
         [Route("dados-do-post/{id:guid}")]
         public async Task<IActionResult> Details(Guid id)
         {
@@ -58,6 +57,7 @@ namespace BlogExpert.Mvc.Controllers
 
             ViewData["editar"] = "true";
             ViewData["excluir"] = "true";
+            ViewData["comentarios"] = "true";
             ViewData["incluircomentario"] = "true";
             ViewData["editarcomentario"] = "true";
             ViewData["excluircomentario"] = "true";
@@ -93,7 +93,7 @@ namespace BlogExpert.Mvc.Controllers
         {
             var postViewModel = await ObterPostParaEdicao(id);
 
-            ViewBag.AutoresIds = await ObterListaDeAutores(id.ToString());
+            ViewBag.AutoresIds = await ObterListaDeAutores(postViewModel.AutorId.ToString());
 
             return View(postViewModel);
         }
@@ -103,7 +103,7 @@ namespace BlogExpert.Mvc.Controllers
         public async Task<IActionResult> Edit(Guid id, PostViewModel postViewModel, string autoresIds)
         {
             if (!string.IsNullOrEmpty(autoresIds)) postViewModel.AutorId = Guid.Parse(autoresIds);
-            ViewBag.AutoresIds = await ObterListaDeAutores(id.ToString());
+            ViewBag.AutoresIds = await ObterListaDeAutores(postViewModel.AutorId.ToString());
 
             if (id != postViewModel.Id) return NotFound();
 

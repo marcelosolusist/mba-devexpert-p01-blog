@@ -6,10 +6,24 @@
 <div class="card bottom-0 top-0">
     <div class="card">
         <div class="card-header">
-            <h1>@Model.Titulo</h1>
+            @if (ViewData["detalhartitulo"] != null && ViewData["detalhartitulo"] == "true")
+            {
+                <h1><a class="link-dark link-offset-2-hover" asp-controller="Posts" asp-action="Details" asp-route-id="@Model.Id">@Model.Titulo</a></h1>
+            }
+            else
+            {
+                <h1>@Model.Titulo</h1>
+            }
         </div>
         <div class="card-body">
-            <h2>@Model.Descricao</h2>
+            @if (ViewData["detalhartitulo"] != null && ViewData["detalhartitulo"] == "true")
+            {
+                <h2><a class="link-dark link-offset-2-hover" asp-controller="Posts" asp-action="Details" asp-route-id="@Model.Id">@Model.Descricao</a></h2>
+            }
+            else
+            {
+                <h2>@Model.Descricao</h2>
+            }
         </div>
         <div class="card-footer">
             <table border="0">
@@ -41,62 +55,65 @@
             </table>
         </div>
     </div>
-    <div class="card bottom-0 top-0 ">
-        @if (SignInManager.IsSignedIn(User))
-        {
-            @if (ViewData["incluircomentario"] != null && ViewData["incluircomentario"] == "true")
+    @if (ViewData["comentarios"] != null && ViewData["comentarios"] == "true")
+    {
+        <div class="card bottom-0 top-0 ">
+            @if (SignInManager.IsSignedIn(User))
             {
-                <div class="card-header">
-                    <a class="btn btn-info" asp-controller="Posts" asp-action="CreateComentario" asp-route-id="@Model.Id">Novo comentário</a>
-                </div>
-            }
-        }
-        <table class="table table-hover">
-            <thead class="card-header">
-                <tr>
-                    <th>
-                        Comentário
-                    </th>
-                    <th>
-                        Data
-                    </th>
-                    <th>
-                        Usuário
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody class="card-body">
-                @foreach (var comentario in Model.Comentarios)
+                @if (ViewData["incluircomentario"] != null && ViewData["incluircomentario"] == "true")
                 {
-                    <tr>
-                        <td>
-                            @comentario.Descricao
-                        </td>
-                        <td>
-                            @comentario.DataCriacao
-                        </td>
-                        <td>
-                            @comentario.EmailCriacao
-                        </td>
-                        <td class="text-right">
-                            @if (SignInManager.IsSignedIn(User))
-                            {
-                                @if (ViewData["editarcomentario"] != null && ViewData["editarcomentario"] == "true")
-                                {
-                                    <a class="btn btn-warning" asp-controller="Posts" asp-action="EditComentario" asp-route-id="@comentario.Id"><spam class="fa fa-pencil-alt"></spam></a>
-                                }
-                                @if (ViewData["excluircomentario"] != null && ViewData["excluircomentario"] == "true")
-                                {
-                                    <a class="btn btn-danger" asp-controller="Posts" asp-action="DeleteComentario" asp-route-id="@comentario.Id"><spam class="fa fa-trash"></spam></a>
-                                }
-                            }
-                        </td>
-                    </tr>
+                    <div class="card-header">
+                        <a class="btn btn-info" asp-controller="Posts" asp-action="CreateComentario" asp-route-id="@Model.Id">Novo comentário</a>
+                    </div>
                 }
-            </tbody>
-        </table>
-    </div>
+            }
+            <table class="table table-hover">
+                <thead class="card-header">
+                    <tr>
+                        <th>
+                            Comentário
+                        </th>
+                        <th>
+                            Data
+                        </th>
+                        <th>
+                            Login
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="card-body">
+                    @foreach (var comentario in Model.Comentarios)
+                    {
+                        <tr>
+                            <td>
+                                @comentario.Descricao
+                            </td>
+                            <td>
+                                @comentario.DataCriacao
+                            </td>
+                            <td>
+                                @comentario.EmailCriacao
+                            </td>
+                            <td class="text-right">
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    @if (ViewData["editarcomentario"] != null && ViewData["editarcomentario"] == "true")
+                                    {
+                                        <a class="btn btn-warning" asp-controller="Posts" asp-action="EditComentario" asp-route-id="@comentario.Id"><spam class="fa fa-pencil-alt"></spam></a>
+                                    }
+                                    @if (ViewData["excluircomentario"] != null && ViewData["excluircomentario"] == "true")
+                                    {
+                                        <a class="btn btn-danger" asp-controller="Posts" asp-action="DeleteComentario" asp-route-id="@comentario.Id"><spam class="fa fa-trash"></spam></a>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
 </div>
 <br />
 
