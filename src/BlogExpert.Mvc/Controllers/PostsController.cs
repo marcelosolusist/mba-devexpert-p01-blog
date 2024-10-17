@@ -46,7 +46,6 @@ namespace BlogExpert.Mvc.Controllers
             return View(_mapper.Map<IEnumerable<PostViewModel>>(await _postRepository.Listar()));
         }
 
-        [AllowAnonymous]
         [Route("dados-do-post/{id:guid}")]
         public async Task<IActionResult> Details(Guid id)
         {
@@ -153,8 +152,8 @@ namespace BlogExpert.Mvc.Controllers
         private async Task<SelectList> ObterListaDeAutores(string? autorId)
         {
             var listaDeAutores = await _postService.ListarAutoresDaContaAutenticada();
-            if (!string.IsNullOrEmpty(autorId)) return new SelectList(listaDeAutores, "Id", "Nome", autorId);
-            return new SelectList(listaDeAutores, "Id", "Nome");
+            if (!string.IsNullOrEmpty(autorId)) return new SelectList(listaDeAutores, "Id", "Email", autorId);
+            return new SelectList(listaDeAutores, "Id", "Email");
         }
 
         [Route("novo-comentario")]

@@ -8,7 +8,7 @@ builder.AddDatabaseSelector();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<BlogExpertDbContext>();
+    .AddEntityFrameworkStores<BlogExpertDbContext>().AddErrorDescriber<DescricaoErroPortugues>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

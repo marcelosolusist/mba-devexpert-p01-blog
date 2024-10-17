@@ -38,11 +38,6 @@ namespace BlogExpert.Negocio.Services
             post.EmailCriacao = _contaAutenticada.Email;
             post.DataCriacao = DateTime.Now;
 
-            if (!await VerificarSeAutorValidoEPodeManipularPost(post, true))
-            {
-                return;
-            }
-
             await _postRepository.Adicionar(post);
         }
 
@@ -56,7 +51,7 @@ namespace BlogExpert.Negocio.Services
                 return;
             }
 
-            if (!await VerificarSeAutorValidoEPodeManipularPost(post, false)) return;
+            if (!await VerificarSeAutorValidoEPodeManipularPost(post)) return;
 
             await _postRepository.Atualizar(post);
         }
@@ -77,7 +72,7 @@ namespace BlogExpert.Negocio.Services
                 return;
             }
 
-            if (!await VerificarSeAutorValidoEPodeManipularPost(post, false)) return;
+            if (!await VerificarSeAutorValidoEPodeManipularPost(post)) return;
 
             await _postRepository.Remover(id);
         }
@@ -110,7 +105,7 @@ namespace BlogExpert.Negocio.Services
             }
             else
             {
-                listaAutores = _autorRepository.Buscar(a => !string.IsNullOrEmpty(a.Nome)).Result.OrderBy(a => a.Nome).ToList();
+                listaAutores = _autorRepository.Buscar(a => !string.IsNullOrEmpty(a.Email)).Result.OrderBy(a => a.Email).ToList();
             }
             if (listaAutores.Count() <= 0)
             {
@@ -124,19 +119,13 @@ namespace BlogExpert.Negocio.Services
             _postRepository?.Dispose();
         }
 
-        private async Task<bool> VerificarSeAutorValidoEPodeManipularPost(Post post, bool verificarAtivo)
+        private async Task<bool> VerificarSeAutorValidoEPodeManipularPost(Post post)
         {
             var autor = await _autorRepository.ObterPorId(post.AutorId);
 
             if (autor == null)
             {
                 Notificar("O autor informado para o post não existe.");
-                return false;
-            }
-
-            if (verificarAtivo && !autor.Ativo)
-            {
-                Notificar("O autor não está ativo.");
                 return false;
             }
 
@@ -156,7 +145,7 @@ namespace BlogExpert.Negocio.Services
                 }
             }
 
-            if (verificarAtivo || _contaAutenticada.EhAdministrador || post.EmailCriacao == _contaAutenticada.Email || autor.Email == _contaAutenticada.Email) return true;
+            if (_contaAutenticada.EhAdministrador || post.EmailCriacao == _contaAutenticada.Email || autor.Email == _contaAutenticada.Email) return true;
             
             Notificar("A conta autenticada não pode manipular esse post.");
             return false;

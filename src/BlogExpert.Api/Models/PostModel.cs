@@ -25,7 +25,7 @@ namespace BlogExpert.Api.Models
         [HiddenInput]
         public string? EmailCriacao { get; set; }
 
-        public AutorModel? Autor { get; set; }
+        public AutorModel Autor { get; set; }
 
         public IEnumerable<ComentarioModel>? Comentarios { get; set; }
     }

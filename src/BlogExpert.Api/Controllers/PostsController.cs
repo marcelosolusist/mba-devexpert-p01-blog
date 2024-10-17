@@ -38,7 +38,6 @@ namespace BlogExpert.Api.Controllers
             return posts.ToList();
         }
 
-        [AllowAnonymous]
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
