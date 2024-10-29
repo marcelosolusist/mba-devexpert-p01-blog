@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BlogExpert.Negocio.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,6 +7,8 @@ namespace BlogExpert.Mvc.ViewModels
 {
     public class ComentarioViewModel
     {
+        private readonly IContaAutenticada _contaAutenticada; 
+
         [Key]
         public Guid Id { get; set; }
 
@@ -21,5 +24,6 @@ namespace BlogExpert.Mvc.ViewModels
         public string? EmailCriacao { get; set; }
 
         public PostViewModel? Post { get; set; }
+        public bool PodeManipular { get; set; }
     }
 }

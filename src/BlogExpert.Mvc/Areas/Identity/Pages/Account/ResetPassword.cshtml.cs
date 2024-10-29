@@ -27,11 +27,11 @@ namespace BlogExpert.Mvc.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "O campo {0} é obrigatório.")]
+            [EmailAddress(ErrorMessage = "Email inválido.")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "O campo {0} é obrigatório.")]
             [Display(Name = "Senha")]
             [StringLength(100, ErrorMessage = "A senha deve ter entre {2} e {1} caracteres.", MinimumLength = 6)]
             [DataType(DataType.Password)]

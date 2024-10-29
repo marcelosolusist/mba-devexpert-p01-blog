@@ -33,12 +33,12 @@ namespace BlogExpert.Mvc.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "O campo {0} é obrigatório.")]
             [DataType(DataType.Password)]
             [Display(Name = "Senha atual")]
             public string OldPassword { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "O campo {0} é obrigatório.")]
             [StringLength(100, ErrorMessage = "A {0} deve ter entre {2} e {1} caracteres.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Nova senha")]
@@ -46,7 +46,7 @@ namespace BlogExpert.Mvc.Areas.Identity.Pages.Account.Manage
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirmação da nova senha")]
-            [Compare("NewPassword", ErrorMessage = "A nova senha e a confirmaçãoda nova senha não correspondem.")]
+            [Compare("NewPassword", ErrorMessage = "A nova senha e a confirmação da nova senha não correspondem.")]
             public string ConfirmPassword { get; set; }
         }
 

@@ -46,7 +46,7 @@ namespace BlogExpert.Mvc.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "O campo {0} é obrigatório.")]
             [StringLength(7, ErrorMessage = "O {0} precisa ter entre {2} e {1} caracteres.", MinimumLength = 6)]
             [DataType(DataType.Text)]
             [Display(Name = "Código de verificação")]

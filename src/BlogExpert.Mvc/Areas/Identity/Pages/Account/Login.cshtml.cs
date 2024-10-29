@@ -42,11 +42,11 @@ namespace BlogExpert.Mvc.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "O campo {0} é obrigatório.")]
+            [EmailAddress(ErrorMessage = "Email inválido.")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "O campo {0} é obrigatório.")]
             [DataType(DataType.Password)]
             [Display(Name = "Senha")]
             public string Password { get; set; }

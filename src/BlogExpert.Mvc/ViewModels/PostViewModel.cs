@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BlogExpert.Mvc.Configurations;
+using BlogExpert.Negocio.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace BlogExpert.Mvc.ViewModels
 {
     public class PostViewModel
-    {
+    {  
+
         [Key]
         public Guid Id { get; set; }
 
@@ -30,5 +33,7 @@ namespace BlogExpert.Mvc.ViewModels
         public AutorViewModel? Autor { get; set; }
 
         public IEnumerable<ComentarioViewModel>? Comentarios { get; set; }
+
+        public bool PodeManipular { get; set; }
     }
 }

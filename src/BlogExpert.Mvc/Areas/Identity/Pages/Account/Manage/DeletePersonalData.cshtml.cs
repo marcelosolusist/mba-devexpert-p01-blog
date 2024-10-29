@@ -29,8 +29,9 @@ namespace BlogExpert.Mvc.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "O campo {0} é obrigatório.")]
             [DataType(DataType.Password)]
+            [Display(Name = "Senha")]
             public string Password { get; set; }
         }
 

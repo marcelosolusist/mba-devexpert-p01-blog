@@ -30,7 +30,7 @@ namespace BlogExpert.Mvc.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "O campo {0} é obrigatório.")]
             [StringLength(100, ErrorMessage = "A {0} precisa ter entre {2} e {1} caracteres.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Nova senha")]

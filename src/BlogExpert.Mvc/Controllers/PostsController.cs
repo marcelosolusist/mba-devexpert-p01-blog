@@ -39,9 +39,12 @@ namespace BlogExpert.Mvc.Controllers
         {
             ViewData["detalhartitulo"] = "true";
             ViewData["detalhar"] = "true";
-            ViewData["editar"] = "true";
-            ViewData["excluir"] = "true";
-            return View(_mapper.Map<IEnumerable<PostViewModel>>(await _postRepository.Listar()));
+            var posts = _mapper.Map<IEnumerable<PostViewModel>>(await _postRepository.Listar());
+            foreach (var post in posts)
+            {
+                await MarcarSePodeManipular(post);
+            }
+            return View(posts);
         }
 
         [AllowAnonymous]
@@ -93,7 +96,7 @@ namespace BlogExpert.Mvc.Controllers
         {
             var postViewModel = await ObterPostParaEdicao(id);
 
-            ViewBag.AutoresIds = await ObterListaDeAutores(postViewModel.AutorId.ToString());
+            if (postViewModel != null) ViewBag.AutoresIds = await ObterListaDeAutores(postViewModel.AutorId.ToString());
 
             return View(postViewModel);
         }
@@ -142,7 +145,7 @@ namespace BlogExpert.Mvc.Controllers
 
         private async Task<PostViewModel> ObterPost(Guid id)
         {
-            return _mapper.Map<PostViewModel>(await _postRepository.ObterPorId(id));
+            return await MarcarSePodeManipular(_mapper.Map<PostViewModel>(await _postRepository.ObterPorId(id)));
         }
         private async Task<PostViewModel> ObterPostParaEdicao(Guid id)
         {
@@ -168,9 +171,10 @@ namespace BlogExpert.Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateComentario(ComentarioViewModel comentarioViewModel)
         {
+            var postId = comentarioViewModel.PostId;
             if (!ModelState.IsValid)
             {
-                comentarioViewModel.Post = await ObterPost(comentarioViewModel.PostId);
+                comentarioViewModel.Post = await ObterPost(postId);
                 return View(comentarioViewModel);
             }
             var comentario = _mapper.Map<Comentario>(comentarioViewModel);
@@ -178,7 +182,8 @@ namespace BlogExpert.Mvc.Controllers
 
             if (!OperacaoValida()) return View(comentarioViewModel);
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Details), new { id = postId });
+            
         }
 
         [Route("editar-comentario/{id:guid}")]
@@ -193,6 +198,8 @@ namespace BlogExpert.Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> EditComentario(Guid id, ComentarioViewModel comentarioViewModel)
         {
+            var postId = comentarioViewModel.PostId;
+
             comentarioViewModel.Post = null;
 
             if (id != comentarioViewModel.Id) return NotFound();
@@ -204,7 +211,7 @@ namespace BlogExpert.Mvc.Controllers
 
             if (!OperacaoValida()) return View(await ObterComentario(id));
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Details), new { id = postId });
         }
 
         [Route("excluir-comentario/{id:guid}")]
@@ -225,7 +232,7 @@ namespace BlogExpert.Mvc.Controllers
 
             await _comentarioService.Remover(id);
 
-            if (!OperacaoValida()) return View(await ObterComentario(id));
+            if (!OperacaoValida()) throw new Exception("Erro no procedimento"); //return View(await ObterComentario(id));
 
             return RedirectToAction("Index");
         }
@@ -246,6 +253,31 @@ namespace BlogExpert.Mvc.Controllers
         {
             if (comentarioViewModel != null) comentarioViewModel.Post = await ObterPost(comentarioViewModel.PostId);
             return comentarioViewModel;
+        }
+
+        private bool ContaPodeManipularPost(string emailAutor)
+        {
+            if (string.IsNullOrEmpty(emailAutor)) return false;
+            if (_contaAutenticada.EhAdministrador || _contaAutenticada.Email == emailAutor) return true;
+            return false;
+        }
+
+        private bool ContaPodeManipularComentario(string emailComentario, string emailAutor)
+        {
+            if (string.IsNullOrEmpty(emailComentario) || string.IsNullOrEmpty(emailAutor)) return false;
+            if (_contaAutenticada.EhAdministrador || _contaAutenticada.Email == emailComentario || _contaAutenticada.Email == emailAutor) return true;
+            return false;
+        }
+
+        private async Task<PostViewModel> MarcarSePodeManipular(PostViewModel postViewModel)
+        {
+            postViewModel.PodeManipular = ContaPodeManipularPost(postViewModel.Autor.Email);
+            foreach (var comentario in postViewModel.Comentarios)
+            {
+                comentario.PodeManipular = ContaPodeManipularComentario(comentario.EmailCriacao, comentario.Post.Autor.Email);
+            }
+
+            return postViewModel;
         }
     }
 }

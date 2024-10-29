@@ -31,7 +31,7 @@ namespace BlogExpert.Mvc.Areas.Identity.Pages.Account
         public class InputModel
         {
             [BindProperty]
-            [Required]
+            [Required(ErrorMessage = "O campo {0} é obrigatório.")]
             [DataType(DataType.Text)]
             [Display(Name = "Código de Recuperação")]
             public string RecoveryCode { get; set; }
