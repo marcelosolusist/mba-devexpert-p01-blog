@@ -9,16 +9,9 @@ namespace BlogExpert.Dados.Repository
     {
         public AutorRepository(BlogExpertDbContext context) : base(context) { }
 
-        public async Task<bool> VerificarSePossuiPost(Guid id)
-        {
-            if (Db.Posts.FirstOrDefault(post => post.AutorId == id) != null) return true;
-
-            return false;
-        }
-
         public override async Task<List<Autor>> Listar()
         {
-            return Db.Autores.OrderBy(a => a.Nome).ToList();
+            return Db.Autores.OrderBy(a => a.Email).ToList();
         }
     }
 }

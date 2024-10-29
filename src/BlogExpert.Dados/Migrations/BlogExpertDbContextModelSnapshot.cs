@@ -28,9 +28,6 @@ namespace BlogExpert.Dados.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("Ativo")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime?>("DataCriacao")
                         .HasColumnType("datetime2");
 
@@ -41,10 +38,6 @@ namespace BlogExpert.Dados.Migrations
                     b.Property<string>("EmailCriacao")
                         .IsRequired()
                         .HasColumnType("varchar(200)");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
 

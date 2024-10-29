@@ -23,16 +23,17 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Descricao" class="control-label"></label>
-                        <textarea asp-for="Descricao" class="form-control" rows="10">@Model.Descricao</textarea>
+                        <textarea asp-for="Descricao" class="form-control" rows="8">@Model.Descricao</textarea>
                         <span asp-validation-for="Descricao" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Autor</label>
                         <div>@Html.DropDownList("AutoresIds")</div>
                     </div>
+                    <br />
                     <div class="form-group">
                         <input type="submit" value="Salvar" class="btn btn-primary" />
-                        <a class="btn btn-info" asp-action="Index">Voltar</a>
+                        <a class="btn btn-info" asp-action="Details" asp-route-id="@Model.Id">Voltar</a>
                     </div>
             </form>
         </div>

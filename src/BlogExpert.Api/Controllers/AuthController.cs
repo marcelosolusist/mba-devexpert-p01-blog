@@ -1,4 +1,6 @@
 ﻿using BlogExpert.Api.Models;
+using BlogExpert.Negocio.Entities;
+using BlogExpert.Negocio.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -16,14 +18,17 @@ namespace BlogExpert.Api.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly JwtSettings _jwtSettings;
+        private readonly IAutorRepository _autorRepository;
 
         public AuthController(SignInManager<IdentityUser> signInManager,
                               UserManager<IdentityUser> userManager,
-                              IOptions<JwtSettings> jwtSettings)
+                              IOptions<JwtSettings> jwtSettings,
+                              IAutorRepository autorRepository)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _jwtSettings = jwtSettings.Value;
+            _autorRepository = autorRepository;
         }
 
         [HttpPost("registrar")]
@@ -31,8 +36,11 @@ namespace BlogExpert.Api.Controllers
         {
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
+            var idUser = Guid.NewGuid();
+
             var user = new IdentityUser
             {
+                Id = idUser.ToString(),
                 UserName = registerUser.Email,
                 Email = registerUser.Email,
                 EmailConfirmed = true
@@ -42,6 +50,8 @@ namespace BlogExpert.Api.Controllers
 
             if (result.Succeeded)
             {
+                var autor = new Autor() { Id = idUser, Email = registerUser.Email, EmailCriacao = registerUser.Email};
+                await _autorRepository.Adicionar(autor);
                 await _signInManager.SignInAsync(user, false);
                 return Ok(await GerarJwt(user.Email));
             }

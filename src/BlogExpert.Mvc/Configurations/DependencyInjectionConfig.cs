@@ -16,7 +16,6 @@ namespace BlogExpert.Mvc.Configurations
             services.AddScoped<IComentarioRepository, ComentarioRepository>();
 
             services.AddScoped<INotificador, Notificador>();
-            services.AddScoped<IAutorService, AutorService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IComentarioService, ComentarioService>();
 

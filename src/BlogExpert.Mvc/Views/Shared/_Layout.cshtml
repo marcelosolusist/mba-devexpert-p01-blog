@@ -10,9 +10,10 @@
     <title>@ViewData["Title"] - BlogExpert.Mvc</title>
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-utilities.css" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
               crossorigin="anonymous"
@@ -37,9 +38,6 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Posts" asp-action="Index">Posts</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Autores" asp-action="Index">Autores</a>
-                            </li>
                         }
                     </ul>
                     <partial name="_LoginPartial" />
@@ -55,7 +53,14 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - BlogExpert.Mvc
+            <div class="d-flex justify-content-between">
+                <div class="text-start">
+                    &copy; 2024 - BlogExpert.Mvc
+                </div>
+                <div class="text-end">
+                    Idioma selecionado: @System.Globalization.CultureInfo.CurrentCulture.Name
+                </div>
+            </div>
         </div>
     </footer>
     
