@@ -53,7 +53,8 @@ A estrutura do projeto é organizada da seguinte forma:
 
 ## **5. Funcionalidades Implementadas**
 
-- **CRUD para Autores:** Permite incluir, editar, visualizar e excluir autores. Apenas o usuário autenticado pode se cadastrar como um autor.
+- **Registro de Usuários:** Permite incluir usuários ao blog que são inseridos também como autores para a publicação de posts.
+- **Gestão de usuários:** Foi adicionado na aplicação MVC os recursos disponibilizados pelo identity com a tradução para portugês.
 - **CRUD para Posts e Comentários:** Permite criar, editar, visualizar e excluir posts e comentários.
 - **Autenticação e Autorização:** Diferenciação entre usuários comuns e administradores.
 - **API RESTful:** Exposição de endpoints para operações CRUD via API.
@@ -90,9 +91,9 @@ A estrutura do projeto é organizada da seguinte forma:
    
 5. **Usuários registrados na carga inicial:**
    - admin@be.net (usuário administrador)
-   - be@be.net (usuário comum e NÃO possui autor vinculado)
-   - marcelo@be.net (usuário comum com autor vinculado)
-   - mayane@be.net (usuário comum com autor vinculado)
+   - be@be.net (usuário comum)
+   - marcelo@be.net (usuário comum)
+   - mayane@be.net (usuário comum)
    - A senha para todos esses usuários é a mesma: Expert@123
 
 ## **7. Instruções de Configuração**
